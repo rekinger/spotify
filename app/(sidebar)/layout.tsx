@@ -16,6 +16,7 @@ import localFont from 'next/font/local';
 import { Provider } from "@/components/provider";
 
 import { IncomingMessage } from 'http';
+import React from "react";
 
 const myFont = localFont({ src: '../../public/CircularStd-Black.otf' })
 
@@ -61,13 +62,14 @@ export default async function RootLayout({
               <NextBreadcrumb
                 separator={<span> {">"} </span>}
                 activeClasses='text-amber-500'
-                containerClasses='flex py-5 bg-gradient-to-r from-purple-600 to-blue-600' 
+                containerClasses='flex py-5 bg-gradient-to-r from-purple-600 to-blue-600'
                 listClasses='hover:underline mx-2 font-bold'
-                capitalizeLinks
-              />
-              <Provider>
-                {children}
-              </Provider>
+                capitalizeLinks homeElement={undefined}              />
+              <React.Fragment>
+                <Provider>
+                  {children}
+                </Provider>
+              </React.Fragment>
               </div>
           </div>
         </Providers>
