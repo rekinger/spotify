@@ -11,7 +11,7 @@ import { NextBreadcrumb } from "@/components/testbreadcrumb";
 
 import localFont from 'next/font/local';
 
-
+import { Suspense } from "react";
 
 import { Provider } from "@/components/provider";
 
@@ -53,6 +53,7 @@ export default async function RootLayout({
         )}
       >
         <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
+          <Suspense>
           <div className={"main " + myFont.className}>
               <Sidebar />
               <div className="flex flex-1 flex-grow flex-col bg-red">
@@ -69,6 +70,7 @@ export default async function RootLayout({
               </React.Fragment>
               </div>
           </div>
+          </Suspense>
         </Providers>
       </body>
     </html>
