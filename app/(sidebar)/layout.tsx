@@ -15,7 +15,6 @@ import localFont from 'next/font/local';
 
 import { Provider } from "@/components/provider";
 
-import { IncomingMessage } from 'http';
 import React from "react";
 
 const myFont = localFont({ src: '../../public/CircularStd-Black.otf' })
@@ -39,11 +38,9 @@ export const viewport: Viewport = {
 };
 
 export default async function RootLayout({
-  children,
-  req
+  children
 }: {
   children: React.ReactNode;
-  req: IncomingMessage
 }) {
 
   return (
