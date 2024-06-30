@@ -9,7 +9,7 @@ import { siteConfig } from "@/config/site";
 
 import localFont from 'next/font/local';
 
-
+import { Suspense } from "react";
 
 import { Provider } from "@/components/provider";
 
@@ -50,6 +50,7 @@ export default async function RootLayout({
           myFont.className
         )}
       >
+        <Suspense>
         <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
           <div className={"main " + myFont.className}>
               <div className="flex flex-1 flex-grow flex-col justify-center items-center">
@@ -61,6 +62,7 @@ export default async function RootLayout({
               </div>
           </div>
         </Providers>
+        </Suspense>
       </body>
     </html>
   );
