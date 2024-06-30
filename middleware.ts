@@ -5,18 +5,9 @@ export default async function middleware(req: NextRequest) {
   // Get the pathname of the request (e.g. /, /protected)
   const path = req.nextUrl.pathname;
 
-  const requestHeaders = new Headers(req.headers)
-
-  requestHeaders.set('path', path)
-
   // If it's the root path, just render it
   if (path === '/signin' || req.nextUrl.pathname.startsWith("/_next") || req.nextUrl.pathname.startsWith("/api/auth") || req.nextUrl.pathname.startsWith("/signin/signin")) {
-    return NextResponse.next({
-      request: {
-        // New request headers
-        headers: requestHeaders,
-      },
-    })
+    return NextResponse.next()
   }
 
   const session = await getToken({
@@ -24,16 +15,12 @@ export default async function middleware(req: NextRequest) {
     secret: process.env.NEXTAUTH_SECRET,
   });
 
-  console.log(session)
+  console.log("SESSION: ",session)
+  console.log("TRYING TO ACCESS: ", path)
 
   if (!session) {
     return NextResponse.redirect(new URL('/signin?referer=' + path, req.url));
   } 
 
-  return NextResponse.next({
-    request: {
-      // New request headers
-      headers: requestHeaders,
-    },
-  })
+  return NextResponse.next()
 }
