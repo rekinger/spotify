@@ -6,7 +6,7 @@ export default async function middleware(req: NextRequest) {
   const path = req.nextUrl.pathname;
 
   // If it's the root path, just render it
-  if (path === '/signin' || req.nextUrl.pathname.startsWith("/_next") || req.nextUrl.pathname.startsWith("/api/auth") || req.nextUrl.pathname.startsWith("/signin/signin")) {
+  if (path === "/favicon.ico" || path === '/signin' || req.nextUrl.pathname.startsWith("/_next") || req.nextUrl.pathname.startsWith("/api/auth") || req.nextUrl.pathname.startsWith("/signin/signin")) {
     return NextResponse.next()
   }
 
