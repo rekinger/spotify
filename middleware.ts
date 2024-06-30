@@ -24,6 +24,8 @@ export default async function middleware(req: NextRequest) {
     secret: process.env.NEXTAUTH_SECRET,
   });
 
+  console.log(session)
+
   if (!session) {
     return NextResponse.redirect(new URL('/signin?referer=' + path, req.url));
   } 
