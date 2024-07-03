@@ -17,7 +17,7 @@ export default function ProfileChild() {
 
   return (
     <div className="flex flex-col w-full h-full items-center justify-center">
-      <Image className="rounded-full" unoptimized alt="Profile Picture" src={null || defaultImage} height={150} width={150}/>
+      <Image className="rounded-full" unoptimized alt="Profile Picture" src={me.data?.image || defaultImage} height={150} width={150}/>
       <p className="text-2xl">
         {
           me.data?.name
