@@ -59,13 +59,14 @@ export const meRouter = createTRPCRouter({
           };
         }
         catch(error) {
+          console.log("ERROR", error)
           return {
             name: "Server Error",
             url: "",
             image: null,
             followers: "",
             country: "",
-            email: "(data as meSpotify).email"
+            email: ""
         };
         }
     })
