@@ -1,6 +1,6 @@
 import {
-    createTRPCRouter,
-    publicProcedure
+  createTRPCRouter,
+  publicProcedure
 } from "../trpc";
 
 interface meSpotify {
@@ -36,24 +36,37 @@ export const meRouter = createTRPCRouter({
     .query(async ({ctx}) => {
 
         const accessToken = ctx.session?.accessToken
-        const response = await fetch("https://api.spotify.com/v1/me", {
-            method:"GET",
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
-              'Authorization': 'Bearer ' + accessToken
-            }
-          })
-        
-        const data = await response.json()
 
-        return {
-            name: (data as meSpotify).display_name,
-            url: (data as meSpotify).external_urls.spotify,
-            image: (data as meSpotify).images[1].url,
-            followers: (data as meSpotify).followers.total,
-            country: (data as meSpotify).country,
-            email: (data as meSpotify).email
+        try {
+          const response = await fetch("https://api.spotify.com/v1/me", {
+              method:"GET",
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + accessToken
+              }
+            })
+          
+          const data = await response.json()
+
+          return {
+              name: (data as meSpotify).display_name,
+              url: (data as meSpotify).external_urls.spotify,
+              image: (data as meSpotify).images[1].url,
+              followers: (data as meSpotify).followers.total,
+              country: (data as meSpotify).country,
+              email: (data as meSpotify).email
+          };
+        }
+        catch(error) {
+          return {
+            name: "Server Error",
+            url: "",
+            image: null,
+            followers: "",
+            country: "",
+            email: "(data as meSpotify).email"
         };
+        }
     })
 });
