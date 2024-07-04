@@ -36,6 +36,7 @@ export const meRouter = createTRPCRouter({
     .query(async ({ctx}) => {
 
         const accessToken = ctx.session?.accessToken
+        console.log(accessToken)
 
         try {
           const response = await fetch("https://api.spotify.com/v1/me", {
@@ -48,11 +49,12 @@ export const meRouter = createTRPCRouter({
             })
           
           const data = await response.json()
+          console.log(data)
 
           return {
               name: (data as meSpotify).display_name,
               url: (data as meSpotify).external_urls.spotify,
-              image: (data as meSpotify).images[1].url,
+              image: (data as meSpotify).images.length > 0 ? (data as meSpotify).images[1].url: null,
               followers: (data as meSpotify).followers.total,
               country: (data as meSpotify).country,
               email: (data as meSpotify).email
