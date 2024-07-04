@@ -54,7 +54,7 @@ export const meRouter = createTRPCRouter({
           return {
               name: (data as meSpotify).display_name,
               url: (data as meSpotify).external_urls.spotify,
-              image: (data as meSpotify).images.length > 0 ? (data as meSpotify).images[1].url: null,
+              image: (data as meSpotify).images.length > 1 ? (data as meSpotify).images[1].url: (data as meSpotify).images.length > 0 ? (data as meSpotify).images[0].url: null,
               followers: (data as meSpotify).followers.total,
               country: (data as meSpotify).country,
               email: (data as meSpotify).email
