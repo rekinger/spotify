@@ -119,12 +119,16 @@ export const authOptions: NextAuthOptions = {
         ...token,
       };
 
+      //console.log(Date.now(), "vs", (Date.now() / 1000) + defaultSpotifyJWT.accessTokenExpires)
+      
+    
       if(Date.now() > (defaultSpotifyJWT.accessTokenExpires * 1000) - 10000) {
+        console.log("REFRESHING")
         const refreshed = await refreshAccessToken(defaultSpotifyJWT.refreshToken)
-        console.log("JUST REFRESHED:",refreshed)
         defaultSpotifyJWT.accessToken = refreshed.access_token
-        defaultSpotifyJWT.accessTokenExpires = refreshed.expires_in
+        defaultSpotifyJWT.accessTokenExpires = (Date.now() / 1000) + refreshed.expires_in
       }
+
 
       return defaultSpotifyJWT;
     },
