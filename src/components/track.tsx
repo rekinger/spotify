@@ -2,6 +2,7 @@
   "use client";
 
 import { Skeleton } from "@nextui-org/skeleton";
+import { motion } from "framer-motion";
 import NextImage from "next/image";
 import { useState } from "react";
 import type { Artist, Image } from "../types/types";
@@ -21,7 +22,7 @@ export function Track({ name, ms, artists, albumImages }: { name: string, ms: nu
     const [imageLoaded, setImageLoaded] = useState(false)
 
     return (
-        <div className="flex w-full py-2 items-center">
+        <motion.div initial={{scaleY:0}} animate={{scaleY:1}} className="flex w-full py-2 items-center">
             <div className="relative w-14 h-14 rounded-md">
                 <Skeleton className="rounded-md h-14 w-14 absolute top-0 left-0" style={{opacity: imageLoaded? 0: 1}}/>
                 <NextImage onLoad={() => {setImageLoaded(true)}} className="rounded-md" unoptimized alt="Album Image" src={albumImages[0].url} height={56} width={56}/>
@@ -49,6 +50,6 @@ export function Track({ name, ms, artists, albumImages }: { name: string, ms: nu
                     getDuration(ms)
                 }
             </div>
-        </div>
+        </motion.div>
     )
 }
