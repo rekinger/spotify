@@ -7,7 +7,7 @@ import {
 import { DefaultJWT } from "next-auth/jwt";
 import SpotifyProvider from "next-auth/providers/spotify";
 
-const spotifyScopes = "playlist-read-private,playlist-modify-private,user-read-private,user-read-email,user-follow-read";
+const spotifyScopes = "playlist-read-private,playlist-modify-private,user-read-private,user-read-email,user-follow-read,user-read-recently-played";
 
 declare module "next-auth" {
   interface Session extends DefaultSession {

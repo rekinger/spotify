@@ -50,7 +50,7 @@ export default async function RootLayout  ({
       <head />
       <body
         className={clsx(
-          "min-h-screen bg-background font-sans antialiased",
+          "h-screen bg-background font-sans antialiased",
           myFont.className
         )}
       >
@@ -59,18 +59,18 @@ export default async function RootLayout  ({
             <Suspense>
               <div className={"main " + myFont.className}>
                   <Sidebar />
-                  <div className="flex flex-1 flex-grow flex-col bg-red">
-                  <NextBreadcrumb
-                    separator={<span> {">"} </span>}
-                    activeClasses='text-amber-500'
-                    containerClasses='flex py-5 bg-gradient-to-r from-purple-600 to-blue-600'
-                    listClasses='hover:underline mx-2 font-bold'
-                    capitalizeLinks homeElement={undefined}              />
-                  <React.Fragment>
-                    <Provider>
-                      {children}
-                    </Provider>
-                  </React.Fragment>
+                  <div className="flex content flex-1 flex-col">
+                    <NextBreadcrumb
+                      separator={<span> {">"} </span>}
+                      activeClasses='text-amber-500'
+                      containerClasses='flex py-5 bg-gradient-to-r from-purple-600 to-blue-600'
+                      listClasses='hover:underline mx-2 font-bold'
+                      capitalizeLinks homeElement={undefined}              />
+                    <React.Fragment>
+                      <Provider>
+                        {children}
+                      </Provider>
+                    </React.Fragment>
                   </div>
               </div>
             </Suspense>
