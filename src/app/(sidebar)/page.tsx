@@ -25,7 +25,7 @@ export default function ProfileChild() {
   }
 
   return (
-    <div className="flex flex-1 w-11/12 sm:w-5/6 px-2 sm:px-6 flex-col page-body overflow-scroll mb-6">
+    <div className="flex flex-1 w-11/12 sm:w-5/6 px-2 sm:px-6 flex-col page-body overflow-y-scroll mb-6">
       <motion.div initial={{opacity:0}} animate={{opacity:1}} className="flex flex-col justify-center items-center">
           <Image className="rounded-full" unoptimized alt="Profile Picture" src={me.data?.image || defaultImage} height={110} width={110}/>
           <p className="text-2xl p-0">
@@ -51,7 +51,7 @@ export default function ProfileChild() {
           Recently Played
         </p>
       </div>
-      <div className="flex flex-col flex-1 min-h-0">
+      <div className="flex flex-col flex-1">
         {
           recent.data?.map((item, index) => {
             return (
