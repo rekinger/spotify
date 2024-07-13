@@ -2,11 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgb(45, 45, 45);
+    border-radius: 10px
+}
+
 .breadcrumbs {
     display: flex;
     height: 50px;
     align-items: center;
-    padding-left: 20px;
     width:100%;
 }
 
