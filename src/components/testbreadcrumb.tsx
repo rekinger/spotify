@@ -38,7 +38,7 @@ export function NextBreadcrumb ({ separator, containerClasses, listClasses, acti
     }
 
     return (
-        <div>
+        <div className='w-full'>
             <ul className={"breadcrumbs"}>
                 <li className={listClasses}><Link href={homeElement == "Profile" ? "/?history=/": "/" + homeElement + "?history=/" + homeElement}>{homeElement[0].toUpperCase() + homeElement.slice(1, homeElement.length)}</Link></li>
                 {pathNames.length > 0 && separator}

@@ -59,7 +59,7 @@ export default async function RootLayout  ({
             <Suspense>
               <div className={"main " + myFont.className}>
                   <Sidebar />
-                  <div className="flex content flex-1 flex-col">
+                  <div className="flex content items-center justify-center flex-1 flex-col">
                     <NextBreadcrumb
                       separator={<span> {">"} </span>}
                       activeClasses='text-amber-500'

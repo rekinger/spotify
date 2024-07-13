@@ -5,7 +5,7 @@ import { fontFamily } from "tailwindcss/defaultTheme";
 export default {
   content: [
     "./src/**/*.tsx",
-    "./node_modules/@nextui-org/theme/dist/components/(button|ripple|spinner).js",
+    "./node_modules/@nextui-org/theme/dist/components/(button|skeleton|ripple|spinner).js",
   ],
   theme: {
     extend: {

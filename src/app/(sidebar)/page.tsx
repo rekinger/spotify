@@ -1,4 +1,5 @@
 'use client'
+import { Track } from '@/src/components/track';
 import defaultImage from '@/src/public/default.png';
 import { api } from '@/src/trpc/react';
 import { signOut } from 'next-auth/react';
@@ -17,7 +18,7 @@ export default function ProfileChild() {
   }
 
   return (
-    <div className="flex flex-1 flex-col page-body overflow-auto">
+    <div className="flex flex-1 w-11/12 sm:w-5/6 px-2 sm:px-4 flex-col page-body overflow-auto">
       <div className="flex flex-col justify-center items-center">
           <Image className="rounded-full" unoptimized alt="Profile Picture" src={me.data?.image || defaultImage} height={110} width={110}/>
           <p className="text-2xl p-0">
@@ -42,27 +43,7 @@ export default function ProfileChild() {
         {
           recent.data?.map((item, index) => {
             return (
-              <div>
-                {item.track.name}
-              </div>
-            )
-          })
-        }
-        {
-          recent.data?.map((item, index) => {
-            return (
-              <div>
-                {item.track.name}
-              </div>
-            )
-          })
-        }
-        {
-          recent.data?.map((item, index) => {
-            return (
-              <div>
-                {item.track.name}
-              </div>
+              <Track name={item.track.name} ms={item.track.duration_ms} artists={item.track.artists} albumImages={item.track.album.images}/>
             )
           })
         }
