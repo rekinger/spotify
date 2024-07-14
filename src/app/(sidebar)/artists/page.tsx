@@ -15,7 +15,7 @@ export default function ArtistComponent() {
     });
 
     return (
-        <div className="flex flex-1 flex-col w-11/12 sm:w-5/6 sm:px-4 overflow-y-scroll overflow-x-hidden">
+        <motion.div layout="size" className="flex flex-1 flex-col w-11/12 sm:w-5/6 sm:px-4 overflow-y-scroll overflow-x-hidden">
             <div className="flex mt-4 mb-3 flex-col items-center justify-center md:flex-row  md:items-center md:justify-between ">
                 <p className="text-2xl">
                     Top Artists
@@ -43,7 +43,6 @@ export default function ArtistComponent() {
                         color={"rgb(29, 185, 84)"}
                         loading={true}
                         aria-label="Loading Spinner"
-                        data-testid="loader"
                     />
                 </div>
             ) : (
@@ -58,11 +57,11 @@ export default function ArtistComponent() {
                                 key={item.id}
                                 className={`min-h-52 w-full ${detailedView ? 'col-span-full' : ''}`}
                             >
-                                <Artist name={item.name} images={item.images} />
+                                <Artist name={item.name} images={item.images} id={item.id}/>
                             </motion.div>
                         ))}
                 </motion.div>
             )}
-        </div>
+        </motion.div>
     );
 }

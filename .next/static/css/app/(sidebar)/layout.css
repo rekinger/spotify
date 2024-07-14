@@ -560,10 +560,6 @@ video {
 .col-span-full {
   grid-column: 1 / -1;
 }
-.mx-2 {
-  margin-left: 0.5rem;
-  margin-right: 0.5rem;
-}
 .mb-3 {
   margin-bottom: 0.75rem;
 }
@@ -988,19 +984,8 @@ video {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
-.bg-gradient-to-r {
-  background-image: linear-gradient(to right, var(--tw-gradient-stops));
-}
 .bg-stripe-gradient {
   background-image: linear-gradient(45deg, rgba(0, 0, 0, 0.1) 25%, transparent 25%, transparent 50%, rgba(0, 0, 0, 0.1) 50%, rgba(0, 0, 0, 0.1) 75%, transparent 75%, transparent);
-}
-.from-purple-600 {
-  --tw-gradient-from: #9333ea var(--tw-gradient-from-position);
-  --tw-gradient-to: rgb(147 51 234 / 0) var(--tw-gradient-to-position);
-  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
-}
-.to-blue-600 {
-  --tw-gradient-to: #2563eb var(--tw-gradient-to-position);
 }
 .p-0 {
   padding: 0px;
@@ -1051,9 +1036,12 @@ video {
   padding-top: 0.75rem;
   padding-bottom: 0.75rem;
 }
-.py-5 {
-  padding-top: 1.25rem;
-  padding-bottom: 1.25rem;
+.py-10 {
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+}
+.pt-10 {
+  padding-top: 2.5rem;
 }
 .text-center {
   text-align: center;
@@ -1094,10 +1082,6 @@ video {
 }
 .font-normal {
   font-weight: 400;
-}
-.text-amber-500 {
-  --tw-text-opacity: 1;
-  color: rgb(245 158 11 / var(--tw-text-opacity));
 }
 .text-background {
   --tw-text-opacity: 1;
@@ -1632,6 +1616,14 @@ video {
     height: 100%
 }
 
+.artist {
+    cursor: pointer;
+}
+
+.artist:hover {
+    opacity: 0.7;
+}
+
 
 /* Media Query */
 @media only screen and (max-width: 640px) {
@@ -1660,7 +1652,7 @@ video {
     }
 
     .page-body {
-        height: calc(100dvh - 200px)
+        height: calc(100dvh - 75px)
     }
 
     .content {
@@ -1956,9 +1948,6 @@ video {
 .hover\:text-secondary-foreground:hover {
   --tw-text-opacity: 1;
   color: hsl(var(--nextui-secondary-foreground) / var(--nextui-secondary-foreground-opacity, var(--tw-text-opacity)));
-}
-.hover\:underline:hover {
-  text-decoration-line: underline;
 }
 .aria-expanded\:scale-\[0\.97\][aria-expanded="true"] {
   --tw-scale-x: 0.97;

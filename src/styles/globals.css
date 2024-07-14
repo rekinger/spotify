@@ -84,6 +84,14 @@
     height: 100%
 }
 
+.artist {
+    cursor: pointer;
+}
+
+.artist:hover {
+    opacity: 0.7;
+}
+
 
 /* Media Query */
 @media only screen and (max-width: 640px) {
@@ -112,7 +120,7 @@
     }
 
     .page-body {
-        height: calc(100dvh - 200px)
+        height: calc(100dvh - 75px)
     }
 
     .content {

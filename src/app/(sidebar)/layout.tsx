@@ -7,7 +7,6 @@ import { Providers } from "./providers";
 import { Sidebar } from "@/src/components/sidebar";
 import { siteConfig } from "@/src/config/site";
 
-import { NextBreadcrumb } from "@/src/components/testbreadcrumb";
 
 import localFont from 'next/font/local';
 
@@ -52,13 +51,7 @@ export default async function RootLayout  ({
             <Suspense>
               <div className={"main " + myFont.className}>
                   <Sidebar />
-                  <div className="flex content items-center justify-center flex-1 flex-col">
-                    <NextBreadcrumb
-                      separator={<span> {">"} </span>}
-                      activeClasses='text-amber-500'
-                      containerClasses='flex py-5 bg-gradient-to-r from-purple-600 to-blue-600'
-                      listClasses='hover:underline mx-2 font-bold'
-                      capitalizeLinks homeElement={undefined}              />
+                  <div className="flex content items-center justify-center flex-1 flex-col pt-10">
                     <React.Fragment>
                       <Provider>
                         {children}
