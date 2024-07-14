@@ -7,7 +7,7 @@ import {
 import { DefaultJWT } from "next-auth/jwt";
 import SpotifyProvider from "next-auth/providers/spotify";
 
-const spotifyScopes = "playlist-read-private,playlist-modify-private,user-read-private,user-read-email,user-follow-read,user-read-recently-played";
+const spotifyScopes = "playlist-read-private,playlist-modify-private,user-read-private,user-read-email,user-follow-read,user-read-recently-played,user-top-read";
 
 declare module "next-auth" {
   interface Session extends DefaultSession {
@@ -45,36 +45,6 @@ interface SpotifyRefresh {
   expires_in: number
 }
 
-/*
-async function getData(accessToken:string, refreshToken:string) {
-  const response = await fetch("https://api.spotify.com/v1/me", {
-    method:"GET",
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + accessToken
-    }
-  })
-
-  const data = await response.json()
-
-  console.log("FETCHED:", data)
-
-  const request = await fetch("https://accounts.spotify.com/api/token", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-      Authorization: `Basic ${Buffer.from(`${process.env.SPOTIFY_CLIENT_ID}:${process.env.SPOTIFY_CLIENT_SECRET}`).toString("base64")}`,
-    },
-    body: `grant_type=refresh_token&refresh_token=${refreshToken}`,
-    cache: "no-cache"
-  });
-
-  const requestData = await request.json()
-
-  console.log("REFRESHED", requestData)
-}
-*/
 async function refreshAccessToken(token: string) : Promise<SpotifyRefresh> {
 
   try {

@@ -10,16 +10,6 @@ exports.id = "vendor-chunks/next";
 exports.ids = ["vendor-chunks/next"];
 exports.modules = {
 
-/***/ "(rsc)/./node_modules/next/font/local/target.css?{\"path\":\"src\\\\app\\\\(no-sidebar)\\\\signin\\\\layout.tsx\",\"import\":\"\",\"arguments\":[{\"src\":\"../../../public/CircularStd-Black.otf\"}],\"variableName\":\"myFont\"}":
-/*!*********************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/next/font/local/target.css?{"path":"src\\app\\(no-sidebar)\\signin\\layout.tsx","import":"","arguments":[{"src":"../../../public/CircularStd-Black.otf"}],"variableName":"myFont"} ***!
-  \*********************************************************************************************************************************************************************************************************/
-/***/ ((module) => {
-
-eval("// Exports\nmodule.exports = {\n\t\"style\": {\"fontFamily\":\"'__myFont_216df9', '__myFont_Fallback_216df9'\"},\n\t\"className\": \"__className_216df9\"\n};\n//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiKHJzYykvLi9ub2RlX21vZHVsZXMvbmV4dC9mb250L2xvY2FsL3RhcmdldC5jc3M/e1wicGF0aFwiOlwic3JjXFxcXGFwcFxcXFwobm8tc2lkZWJhcilcXFxcc2lnbmluXFxcXGxheW91dC50c3hcIixcImltcG9ydFwiOlwiXCIsXCJhcmd1bWVudHNcIjpbe1wic3JjXCI6XCIuLi8uLi8uLi9wdWJsaWMvQ2lyY3VsYXJTdGQtQmxhY2sub3RmXCJ9XSxcInZhcmlhYmxlTmFtZVwiOlwibXlGb250XCJ9IiwibWFwcGluZ3MiOiJBQUFBO0FBQ0E7QUFDQSxXQUFXLDZEQUE2RDtBQUN4RTtBQUNBIiwic291cmNlcyI6WyJ3ZWJwYWNrOi8vdDN0ZXN0Ly4vbm9kZV9tb2R1bGVzL25leHQvZm9udC9sb2NhbC90YXJnZXQuY3NzPzJjMGUiXSwic291cmNlc0NvbnRlbnQiOlsiLy8gRXhwb3J0c1xubW9kdWxlLmV4cG9ydHMgPSB7XG5cdFwic3R5bGVcIjoge1wiZm9udEZhbWlseVwiOlwiJ19fbXlGb250XzIxNmRmOScsICdfX215Rm9udF9GYWxsYmFja18yMTZkZjknXCJ9LFxuXHRcImNsYXNzTmFtZVwiOiBcIl9fY2xhc3NOYW1lXzIxNmRmOVwiXG59O1xuIl0sIm5hbWVzIjpbXSwic291cmNlUm9vdCI6IiJ9\n//# sourceURL=webpack-internal:///(rsc)/./node_modules/next/font/local/target.css?{\"path\":\"src\\\\app\\\\(no-sidebar)\\\\signin\\\\layout.tsx\",\"import\":\"\",\"arguments\":[{\"src\":\"../../../public/CircularStd-Black.otf\"}],\"variableName\":\"myFont\"}\n");
-
-/***/ }),
-
 /***/ "(rsc)/./node_modules/next/font/local/target.css?{\"path\":\"src\\\\app\\\\(sidebar)\\\\layout.tsx\",\"import\":\"\",\"arguments\":[{\"src\":\"../../public/CircularStd-Black.otf\"}],\"variableName\":\"myFont\"}":
 /*!*******************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/next/font/local/target.css?{"path":"src\\app\\(sidebar)\\layout.tsx","import":"","arguments":[{"src":"../../public/CircularStd-Black.otf"}],"variableName":"myFont"} ***!
@@ -37,16 +27,6 @@ eval("// Exports\nmodule.exports = {\n\t\"style\": {\"fontFamily\":\"'__myFont_2
 /***/ ((module) => {
 
 eval("// Exports\nmodule.exports = {\n\t\"style\": {\"fontFamily\":\"'__myFont_216df9', '__myFont_Fallback_216df9'\"},\n\t\"className\": \"__className_216df9\"\n};\n//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiKHNzcikvLi9ub2RlX21vZHVsZXMvbmV4dC9mb250L2xvY2FsL3RhcmdldC5jc3M/e1wicGF0aFwiOlwic3JjXFxcXGNvbXBvbmVudHNcXFxcc2lkZWJhci50c3hcIixcImltcG9ydFwiOlwiXCIsXCJhcmd1bWVudHNcIjpbe1wic3JjXCI6XCIuLi9wdWJsaWMvQ2lyY3VsYXJTdGQtQmxhY2sub3RmXCJ9XSxcInZhcmlhYmxlTmFtZVwiOlwibXlGb250XCJ9IiwibWFwcGluZ3MiOiJBQUFBO0FBQ0E7QUFDQSxXQUFXLDZEQUE2RDtBQUN4RTtBQUNBIiwic291cmNlcyI6WyJ3ZWJwYWNrOi8vdDN0ZXN0Ly4vbm9kZV9tb2R1bGVzL25leHQvZm9udC9sb2NhbC90YXJnZXQuY3NzPzEyYmYiXSwic291cmNlc0NvbnRlbnQiOlsiLy8gRXhwb3J0c1xubW9kdWxlLmV4cG9ydHMgPSB7XG5cdFwic3R5bGVcIjoge1wiZm9udEZhbWlseVwiOlwiJ19fbXlGb250XzIxNmRmOScsICdfX215Rm9udF9GYWxsYmFja18yMTZkZjknXCJ9LFxuXHRcImNsYXNzTmFtZVwiOiBcIl9fY2xhc3NOYW1lXzIxNmRmOVwiXG59O1xuIl0sIm5hbWVzIjpbXSwic291cmNlUm9vdCI6IiJ9\n//# sourceURL=webpack-internal:///(ssr)/./node_modules/next/font/local/target.css?{\"path\":\"src\\\\components\\\\sidebar.tsx\",\"import\":\"\",\"arguments\":[{\"src\":\"../public/CircularStd-Black.otf\"}],\"variableName\":\"myFont\"}\n");
-
-/***/ }),
-
-/***/ "(ssr)/./node_modules/next/font/local/target.css?{\"path\":\"src\\\\components\\\\track.tsx\",\"import\":\"\",\"arguments\":[{\"src\":\"../public/CircularStd-Black.otf\"}],\"variableName\":\"myFont\"}":
-/*!***********************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/next/font/local/target.css?{"path":"src\\components\\track.tsx","import":"","arguments":[{"src":"../public/CircularStd-Black.otf"}],"variableName":"myFont"} ***!
-  \***********************************************************************************************************************************************************************************/
-/***/ ((module) => {
-
-eval("// Exports\nmodule.exports = {\n\t\"style\": {\"fontFamily\":\"'__myFont_216df9', '__myFont_Fallback_216df9'\"},\n\t\"className\": \"__className_216df9\"\n};\n//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiKHNzcikvLi9ub2RlX21vZHVsZXMvbmV4dC9mb250L2xvY2FsL3RhcmdldC5jc3M/e1wicGF0aFwiOlwic3JjXFxcXGNvbXBvbmVudHNcXFxcdHJhY2sudHN4XCIsXCJpbXBvcnRcIjpcIlwiLFwiYXJndW1lbnRzXCI6W3tcInNyY1wiOlwiLi4vcHVibGljL0NpcmN1bGFyU3RkLUJsYWNrLm90ZlwifV0sXCJ2YXJpYWJsZU5hbWVcIjpcIm15Rm9udFwifSIsIm1hcHBpbmdzIjoiQUFBQTtBQUNBO0FBQ0EsV0FBVyw2REFBNkQ7QUFDeEU7QUFDQSIsInNvdXJjZXMiOlsid2VicGFjazovL3QzdGVzdC8uL25vZGVfbW9kdWxlcy9uZXh0L2ZvbnQvbG9jYWwvdGFyZ2V0LmNzcz84MTJlIl0sInNvdXJjZXNDb250ZW50IjpbIi8vIEV4cG9ydHNcbm1vZHVsZS5leHBvcnRzID0ge1xuXHRcInN0eWxlXCI6IHtcImZvbnRGYW1pbHlcIjpcIidfX215Rm9udF8yMTZkZjknLCAnX19teUZvbnRfRmFsbGJhY2tfMjE2ZGY5J1wifSxcblx0XCJjbGFzc05hbWVcIjogXCJfX2NsYXNzTmFtZV8yMTZkZjlcIlxufTtcbiJdLCJuYW1lcyI6W10sInNvdXJjZVJvb3QiOiIifQ==\n//# sourceURL=webpack-internal:///(ssr)/./node_modules/next/font/local/target.css?{\"path\":\"src\\\\components\\\\track.tsx\",\"import\":\"\",\"arguments\":[{\"src\":\"../public/CircularStd-Black.otf\"}],\"variableName\":\"myFont\"}\n");
 
 /***/ }),
 

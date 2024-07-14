@@ -1,21 +1,9 @@
 {
   "pages": {
-    "/(no-sidebar)/signin/page": [
+    "/(sidebar)/artists/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(no-sidebar)/signin/page.js"
-    ],
-    "/(no-sidebar)/signin/layout": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/(no-sidebar)/signin/layout.css",
-      "static/chunks/app/(no-sidebar)/signin/layout.js"
-    ],
-    "/(sidebar)/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/(sidebar)/page.css",
-      "static/chunks/app/(sidebar)/page.js"
+      "static/chunks/app/(sidebar)/artists/page.js"
     ],
     "/(sidebar)/layout": [
       "static/chunks/webpack.js",

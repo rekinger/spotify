@@ -3,7 +3,7 @@ import {
   publicProcedure
 } from "../trpc";
 
-import type { meSpotify, RecentlyPlayed } from "@/src/types/types";
+import type { Artist, meSpotify, RecentlyPlayed } from "@/src/types/types";
 
 
 
@@ -63,6 +63,8 @@ export const meRouter = createTRPCRouter({
             })
           
           const data = await response.json()
+
+          console.log("Data: ", data)
           
           return (data as RecentlyPlayed).items
         }
@@ -70,5 +72,29 @@ export const meRouter = createTRPCRouter({
           console.log("ERROR", error)
           return []
         }
-    })
+    }),
+    getTopArtists: publicProcedure
+    .query(async ({ctx}) => {
+
+        const accessToken = ctx.session?.accessToken
+
+        try {
+          const response = await fetch("https://api.spotify.com/v1/me/top/artists", {
+              method:"GET",
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + accessToken
+              }
+            })
+          
+          const data = await response.json()
+          
+          return (data.items as Artist[])
+        }
+        catch(error) {
+          console.log("ERROR", error)
+          return []
+        }
+    }),
 });

@@ -98,6 +98,9 @@ export interface Artist {
   name: string;
   type: string;
   uri: string;
+  popularity: number;
+  genres: String[];
+  images: Image[];
 }
 
 export interface Image {

@@ -19,6 +19,7 @@
     "@nextui-org/button": "^2.0.34",
     "@nextui-org/skeleton": "^2.0.29",
     "@nextui-org/system": "^2.2.2",
+    "@nextui-org/tabs": "^2.0.32",
     "@nextui-org/theme": "^2.2.6",
     "@nextui-org/tooltip": "^2.0.36",
     "@prisma/client": "^5.14.0",
