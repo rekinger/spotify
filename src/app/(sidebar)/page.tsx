@@ -5,8 +5,11 @@ import { api } from '@/src/trpc/react';
 import { Tooltip } from '@nextui-org/tooltip';
 import { motion } from 'framer-motion';
 import { signOut } from 'next-auth/react';
+import localFont from 'next/font/local';
 import Image from 'next/image';
 import { ScaleLoader } from 'react-spinners';
+
+const myFont = localFont({ src: '../../public/CircularStd-Black.otf' })
 
 export default function ProfileChild() {
   const me = api.me.getMe.useQuery()
@@ -57,10 +60,12 @@ export default function ProfileChild() {
           recent.data?.map((item, index) => {
             const timeObj = new Date(item.played_at);
             const readableTime = timeObj.toLocaleString('en-US', {year:'numeric', month:'long', day:'2-digit', hour:'numeric', minute:'numeric'});
-            
+            console.log(readableTime)
             return (
-              <Tooltip closeDelay={0} className=" p-2" showArrow={true} placement="left" content={readableTime}>
-                <Track key={item.track.id} name={item.track.name} ms={item.track.duration_ms} artists={item.track.artists} albumImages={item.track.album.images}/>
+              <Tooltip key={item.track.id} closeDelay={0} className={`${myFont.className} p-2`} p-2 showArrow={true} placement="left" content={readableTime}>
+                <div className="h-full w-full">
+                  <Track name={item.track.name} ms={item.track.duration_ms} artists={item.track.artists} albumImages={item.track.album.images}/>
+                </div>
               </Tooltip>
             )
           })
