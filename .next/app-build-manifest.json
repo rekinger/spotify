@@ -1,16 +1,5 @@
 {
   "pages": {
-    "/(no-sidebar)/signin/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(no-sidebar)/signin/page.js"
-    ],
-    "/(no-sidebar)/signin/layout": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/(no-sidebar)/signin/layout.css",
-      "static/chunks/app/(no-sidebar)/signin/layout.js"
-    ],
     "/(sidebar)/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",

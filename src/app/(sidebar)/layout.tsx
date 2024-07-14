@@ -1,6 +1,6 @@
 import "@/src/styles/globals.css";
 import clsx from "clsx";
-import { Metadata, Viewport } from "next";
+import { Metadata } from "next";
 
 import { Providers } from "./providers";
 
@@ -32,13 +32,6 @@ export const metadata: Metadata = {
   },
 };
 
-export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "white" },
-    { media: "(prefers-color-scheme: dark)", color: "black" },
-  ],
-};
-
 export default async function RootLayout  ({
   children
 }: {
@@ -50,7 +43,7 @@ export default async function RootLayout  ({
       <head />
       <body
         className={clsx(
-          "h-screen bg-background font-sans antialiased",
+          "page-body sbg-background font-sans antialiased",
           myFont.className
         )}
       >

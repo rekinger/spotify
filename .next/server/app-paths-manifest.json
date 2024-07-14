@@ -1,6 +1,5 @@
 {
   "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
   "/api/trpc/[trpc]/route": "app/api/trpc/[trpc]/route.js",
-  "/(no-sidebar)/signin/page": "app/(no-sidebar)/signin/page.js",
   "/(sidebar)/page": "app/(sidebar)/page.js"
 }
