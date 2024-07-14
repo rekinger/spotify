@@ -46,7 +46,7 @@ export default function ProfileChild() {
             Sign Out
           </button>
       </motion.div>
-      <div>
+      <div className="mt-4">
         <p className="text-3xl">
           Recently Played
         </p>
