@@ -25,7 +25,7 @@ export default function artist() {
       }
 
     return (
-        <div className="flex flex-1 flex-col w-11/12 sm:w-5/6 px-2 sm:px-4 overflow-y-scroll">
+        <div className="flex flex-1 flex-col w-11/12 sm:w-5/6 sm:px-4 overflow-y-scroll overflow-x-hidden">
             <div className="flex mt-4 mb-3 flex-col items-center justify-center md:flex-row  md:items-center md:justify-between ">
                 <p className="text-2xl">
                     Top Artists
