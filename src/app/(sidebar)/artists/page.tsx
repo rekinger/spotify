@@ -39,11 +39,7 @@ export default function artist() {
                     <Tab key="4-weeks" title="Last 4 Weeks"/>
                 </Tabs>
             </div>
-            <motion.div 
-                layout
-                transition={{duration:2}}
-                className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full"
-            >
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full">
                 {topArtists.data?.map((item, index) => (
                     <motion.div 
                         key={index} 
@@ -54,7 +50,7 @@ export default function artist() {
                         <Artist name={item.name} images={item.images} />
                     </motion.div>
                 ))}
-            </motion.div>
+            </div>
         </div>
     )
 }

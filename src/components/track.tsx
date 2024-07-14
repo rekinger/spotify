@@ -31,7 +31,7 @@ export function Track({ name, ms, artists, albumImages }: { name: string, ms: nu
                 <NextImage onLoad={() => {setImageLoaded(true)}} className="rounded-md" unoptimized alt="Album Image" src={albumImages[0].url} height={56} width={56}/>
             </div>
             <div className="flex flex-col ml-2">
-                <p>
+                <p className="truncate">
                     {
                         name
                     }
@@ -40,8 +40,8 @@ export function Track({ name, ms, artists, albumImages }: { name: string, ms: nu
                     {
                         artists.map((item, index) => {
                             return (
-                                <p className="opacity-75">
-                                    {item.name}{index == artists.length - 1 ? " ":", "}
+                                <p className="opacity-75 truncate">
+                                    {item.name}{index == artists.length - 1 ? "":","}&nbsp;
                                 </p>
                             )
                         })
