@@ -60,7 +60,6 @@ export default function ProfileChild() {
           recent.data?.map((item, index) => {
             const timeObj = new Date(item.played_at);
             const readableTime = timeObj.toLocaleString('en-US', {year:'numeric', month:'long', day:'2-digit', hour:'numeric', minute:'numeric'});
-            console.log(readableTime)
             return (
               <Tooltip key={item.track.id} closeDelay={0} className={`${myFont.className} p-2`} p-2 showArrow={true} placement="left" content={readableTime}>
                 <motion.div initial={{opacity:0, marginTop:8}} animate={{opacity:1, marginTop:0}} className="h-full w-full">
