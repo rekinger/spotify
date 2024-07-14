@@ -63,9 +63,9 @@ export default function ProfileChild() {
             console.log(readableTime)
             return (
               <Tooltip key={item.track.id} closeDelay={0} className={`${myFont.className} p-2`} p-2 showArrow={true} placement="left" content={readableTime}>
-                <div className="h-full w-full">
+                <motion.div initial={{opacity:0, marginTop:8}} animate={{opacity:1, marginTop:0}} className="h-full w-full">
                   <Track name={item.track.name} ms={item.track.duration_ms} artists={item.track.artists} albumImages={item.track.album.images}/>
-                </div>
+                </motion.div>
               </Tooltip>
             )
           })
