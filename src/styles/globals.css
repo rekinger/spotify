@@ -84,6 +84,9 @@
     height: 100%
 }
 
+.track:hover {
+    background-color: rgb(45, 45, 45);
+}
 
 /* Media Query */
 @media only screen and (max-width: 640px) {

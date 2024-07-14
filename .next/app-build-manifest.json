@@ -3,6 +3,7 @@
     "/(sidebar)/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
+      "static/css/app/(sidebar)/page.css",
       "static/chunks/app/(sidebar)/page.js"
     ],
     "/(sidebar)/layout": [

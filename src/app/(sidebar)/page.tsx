@@ -55,7 +55,7 @@ export default function ProfileChild() {
         {
           recent.data?.map((item, index) => {
             return (
-              <Track name={item.track.name} ms={item.track.duration_ms} artists={item.track.artists} albumImages={item.track.album.images}/>
+              <Track name={item.track.name} ms={item.track.duration_ms} artists={item.track.artists} albumImages={item.track.album.images} lastPlayed={item.played_at}/>
             )
           })
         }
