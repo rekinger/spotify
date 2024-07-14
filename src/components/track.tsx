@@ -22,7 +22,7 @@ export function Track({ name, ms, artists, albumImages }: { name: string, ms: nu
     const [imageLoaded, setImageLoaded] = useState(false)
 
     return (
-        <motion.div initial={{opacity:0, marginTop:8}} animate={{opacity:1, marginTop:0}} className="flex w-full py-2 items-center">
+        <motion.div initial={{opacity:0, marginTop:8}} animate={{opacity:1, marginTop:0}} className="flex w-full py-3 items-center">
             <div className="relative w-14 h-14 rounded-md">
                 <Skeleton className="rounded-md h-14 w-14 absolute top-0 left-0" style={{opacity: imageLoaded? 0: 1}}/>
                 <NextImage onLoad={() => {setImageLoaded(true)}} className="rounded-md" unoptimized alt="Album Image" src={albumImages[0].url} height={56} width={56}/>
