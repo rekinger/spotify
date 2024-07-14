@@ -1,3 +1,4 @@
+import { z } from "zod";
 import {
   createTRPCRouter,
   publicProcedure
@@ -63,8 +64,6 @@ export const meRouter = createTRPCRouter({
             })
           
           const data = await response.json()
-
-          console.log("Data: ", data)
           
           return (data as RecentlyPlayed).items
         }
@@ -74,12 +73,15 @@ export const meRouter = createTRPCRouter({
         }
     }),
     getTopArtists: publicProcedure
-    .query(async ({ctx}) => {
+    .input(z.object({ time_range: z.string() }))
+    .query(async ({input, ctx}) => {
 
         const accessToken = ctx.session?.accessToken
 
+        let time_range = input.time_range
+
         try {
-          const response = await fetch("https://api.spotify.com/v1/me/top/artists", {
+          const response = await fetch(`https://api.spotify.com/v1/me/top/artists?time_range=${time_range}`, {
               method:"GET",
               headers: {
                 'Accept': 'application/json',
@@ -89,6 +91,8 @@ export const meRouter = createTRPCRouter({
             })
           
           const data = await response.json()
+
+          //console.log(data.items)
           
           return (data.items as Artist[])
         }
