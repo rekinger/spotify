@@ -48,12 +48,14 @@ export default function ArtistComponent() {
             ) : (
                 <motion.div 
                     initial={{ opacity: 0, marginTop: 8 }}
-                    animate={{ opacity: 1, marginTop: 0 }} 
+                    animate={{ opacity: 1, marginTop: 0 }}
+                    transition={{duration:0.3}}
                     className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full">
                         {topArtists.data?.map((item, index) => (
                             <motion.div
                                 initial={{opacity:0}}
                                 animate={{opacity:1}}
+                                transition={{duration:0.4}}
                                 key={item.id}
                                 className={`min-h-52 w-full ${detailedView ? 'col-span-full' : ''}`}
                             >

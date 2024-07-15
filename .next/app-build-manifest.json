@@ -1,10 +1,9 @@
 {
   "pages": {
-    "/(sidebar)/page": [
+    "/(sidebar)/artists/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/css/app/(sidebar)/page.css",
-      "static/chunks/app/(sidebar)/page.js"
+      "static/chunks/app/(sidebar)/artists/page.js"
     ],
     "/(sidebar)/layout": [
       "static/chunks/webpack.js",
@@ -27,20 +26,16 @@
       "static/chunks/main-app.js",
       "static/chunks/app/(sidebar)/not-found.js"
     ],
-    "/(sidebar)/artists/page": [
+    "/(sidebar)/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(sidebar)/artists/page.js"
+      "static/css/app/(sidebar)/page.css",
+      "static/chunks/app/(sidebar)/page.js"
     ],
-    "/(sidebar)/[...not_found]/page": [
+    "/(sidebar)/artists/[id]/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(sidebar)/[...not_found]/page.js"
-    ],
-    "/(sidebar)/[...not_found]/layout": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(sidebar)/[...not_found]/layout.js"
+      "static/chunks/app/(sidebar)/artists/[id]/page.js"
     ]
   }
 }
