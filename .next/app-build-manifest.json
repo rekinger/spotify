@@ -31,11 +31,6 @@
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/(sidebar)/artists/page.js"
-    ],
-    "/(sidebar)/artists/[id]/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(sidebar)/artists/[id]/page.js"
     ]
   }
 }
