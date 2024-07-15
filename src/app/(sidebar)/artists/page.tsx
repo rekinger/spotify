@@ -57,7 +57,7 @@ export default function ArtistComponent() {
                                 key={item.id}
                                 className={`min-h-52 w-full ${detailedView ? 'col-span-full' : ''}`}
                             >
-                                <Artist name={item.name} images={item.images}/>
+                                <Artist name={item.name} images={item.images} id={item.id}/>
                             </motion.div>
                         ))}
                 </motion.div>
