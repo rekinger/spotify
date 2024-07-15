@@ -11,7 +11,7 @@ import type { Image } from "../types/types";
 
 export function Artist({ name, images, id }: { name: string, images: Image[], id: string }) {
     const [imageLoaded, setImageLoaded] = useState(false)
-
+ 
     return (
         <Link href={`/${id}`} className="artist flex flex-col w-full h-full justify-center items-center">
             <motion.div layout="position" className="flex flex-col justify-center items-center">
