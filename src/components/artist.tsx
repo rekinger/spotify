@@ -13,7 +13,7 @@ export function Artist({ name, images, id }: { name: string, images: Image[], id
     const [imageLoaded, setImageLoaded] = useState(false)
  
     return (
-        <Link href={`/${id}`} className="artist flex flex-col w-full h-full justify-center items-center">
+        <Link href={`/artist/${id}`} className="artist flex flex-col w-full h-full justify-center items-center">
             <motion.div layout="position" className="flex flex-col justify-center items-center">
                 <Button className="rounded-full p-0 h-28 w-28 md:w-32 md:h-32 lg:w-44 lg:h-44">
                     <div className="relative h-28 w-28 md:w-32 md:h-32 lg:w-44 lg:h-44">
