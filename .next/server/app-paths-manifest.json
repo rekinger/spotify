@@ -1,8 +1,7 @@
 {
-  "/api/trpc/[trpc]/route": "app/api/trpc/[trpc]/route.js",
   "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
-  "/(sidebar)/curator/page": "app/(sidebar)/curator/page.js",
-  "/(sidebar)/artists/page": "app/(sidebar)/artists/page.js",
-  "/(sidebar)/[...not_found]/page": "app/(sidebar)/[...not_found]/page.js",
-  "/(sidebar)/page": "app/(sidebar)/page.js"
+  "/api/trpc/[trpc]/route": "app/api/trpc/[trpc]/route.js",
+  "/(sidebar)/page": "app/(sidebar)/page.js",
+  "/(no-sidebar)/signin/page": "app/(no-sidebar)/signin/page.js",
+  "/(sidebar)/artists/page": "app/(sidebar)/artists/page.js"
 }
