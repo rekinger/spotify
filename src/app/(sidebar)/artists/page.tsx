@@ -38,7 +38,7 @@ export default function ArtistComponent() {
                 </Tabs>
             </div>
             {topArtists.isLoading ? (
-                <div className="flex flex-1 w-11/12 sm:w-5/6 px-2 sm:px-4 justify-center items-center">
+                <div className="flex flex-1 w-full justify-center items-center">
                     <ScaleLoader
                         color={"rgb(29, 185, 84)"}
                         loading={true}

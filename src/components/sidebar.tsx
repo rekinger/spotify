@@ -3,7 +3,7 @@
 import clsx from "clsx";
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { GiBackwardTime } from "react-icons/gi";
+import { GiPotionBall } from "react-icons/gi";
 import { IoIosMusicalNotes, IoMdMicrophone, IoMdPerson } from "react-icons/io";
 
 import localFont from 'next/font/local';
@@ -35,10 +35,10 @@ export const Sidebar = () => {
                         Top Tracks
                     </p>
                 </Link>
-                <Link href="/recent?history=/recent" className={clsx("sidebar-button", currentPath?.startsWith("/recent") ? "sidebar-button-active":"")}>
-                    <GiBackwardTime color={"inherit"} size={25}/>
+                <Link href="/curator?history=/curator" className={clsx("sidebar-button", currentPath?.startsWith("/curator") ? "sidebar-button-active":"")}>
+                    <GiPotionBall color={"inherit"} size={25}/>
                     <p className="sidebar-button-text">
-                        Recent
+                        Curator
                     </p>
                 </Link>
             </div>
