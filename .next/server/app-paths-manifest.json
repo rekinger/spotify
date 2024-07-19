@@ -2,6 +2,6 @@
   "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
   "/api/trpc/[trpc]/route": "app/api/trpc/[trpc]/route.js",
   "/(sidebar)/page": "app/(sidebar)/page.js",
-  "/(sidebar)/curator/page": "app/(sidebar)/curator/page.js",
-  "/(sidebar)/artists/page": "app/(sidebar)/artists/page.js"
+  "/(sidebar)/artists/page": "app/(sidebar)/artists/page.js",
+  "/(sidebar)/artists/[id]/page": "app/(sidebar)/artists/[id]/page.js"
 }
