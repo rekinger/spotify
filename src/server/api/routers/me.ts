@@ -12,8 +12,8 @@ export const meRouter = createTRPCRouter({
   getMe: publicProcedure
     .query(async ({ctx}) => {
 
+        console.log("pinged getMe")
         const accessToken = ctx.session?.accessToken
-        console.log(accessToken)
 
         try {
           const response = await fetch("https://api.spotify.com/v1/me", {
@@ -51,6 +51,7 @@ export const meRouter = createTRPCRouter({
     getRecent: publicProcedure
     .query(async ({ctx}) => {
 
+        console.log("pinged getRecent")
         const accessToken = ctx.session?.accessToken
 
         try {
@@ -76,6 +77,7 @@ export const meRouter = createTRPCRouter({
     .input(z.object({ time_range: z.string() }))
     .query(async ({input, ctx}) => {
 
+        console.log("pinged getTopArtists")
         const accessToken = ctx.session?.accessToken
 
         let time_range = input.time_range

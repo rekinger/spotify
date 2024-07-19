@@ -25,9 +25,9 @@ export function Track({ name, ms, artists, albumImages }: { name: string, ms: nu
 
     return (
         <div className="flex track w-full rounded-md py-3 items-center">
-            <div className="relative w-14 h-14 rounded-md">
-                <Skeleton className="rounded-md h-14 w-14 absolute top-0 left-0" style={{opacity: imageLoaded? 0: 1}}/>
-                <NextImage onLoad={() => {setImageLoaded(true)}} className="rounded-md" unoptimized alt="Album Image" src={albumImages[0].url} height={56} width={56}/>
+            <div className="relative w-14 h-14">
+                <Skeleton className="h-14 w-14 absolute top-0 left-0" style={{opacity: imageLoaded? 0: 1}}/>
+                <NextImage onLoad={() => {setImageLoaded(true)}}  unoptimized alt="Album Image" src={albumImages[0].url} height={56} width={56}/>
             </div>
             <div className="flex flex-col ml-2">
                 <p className="truncate">

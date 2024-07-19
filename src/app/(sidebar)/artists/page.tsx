@@ -11,7 +11,7 @@ export default function ArtistComponent() {
     const [timeRange, setTimeRange] = useState("long_term");
 
     const topArtists = api.me.getTopArtists.useQuery({ time_range: timeRange }, {
-        staleTime: 5 * 60 * 1000, // 5 minute
+        staleTime: 5 * 60 * 1000,
     });
 
     return (
