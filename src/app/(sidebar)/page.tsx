@@ -60,16 +60,14 @@ export default function ProfileChild() {
           Recently Played
         </p>
       </div>
-      <div className="flex flex-col flex-1">
+      <motion.div initial={{opacity:0, marginTop:8}} animate={{opacity:1, marginTop:0}} className="flex flex-col flex-1">
         {
           recent.data?.map((item, index) => {
             const timeObj = new Date(item.played_at);
             const readableTime = timeObj.toLocaleString('en-US', {year:'numeric', month:'long', day:'2-digit', hour:'numeric', minute:'numeric'});
             return (
               <Tooltip key={item.track.id} closeDelay={0} className={`${myFont.className} p-2`} p-2 showArrow={true} placement="left" content={readableTime}>
-                <motion.div initial={{opacity:0, marginTop:8}} animate={{opacity:1, marginTop:0}} className="h-full w-full">
                   <Track name={item.track.name} ms={item.track.duration_ms} artists={item.track.artists} albumImages={item.track.album.images}/>
-                </motion.div>
               </Tooltip>
             )
           })
@@ -77,7 +75,7 @@ export default function ProfileChild() {
         <div className='min-h-5 w-3'>
           <span></span>
         </div>
-      </div>
+      </motion.div>
     </div>
   )
 }

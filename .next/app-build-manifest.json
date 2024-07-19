@@ -27,25 +27,15 @@
       "static/chunks/main-app.js",
       "static/chunks/app/(sidebar)/not-found.js"
     ],
+    "/(sidebar)/curator/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(sidebar)/curator/page.js"
+    ],
     "/(sidebar)/artists/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/(sidebar)/artists/page.js"
-    ],
-    "/(sidebar)/artists/[id]/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(sidebar)/artists/[id]/page.js"
-    ],
-    "/(sidebar)/[...not_found]/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(sidebar)/[...not_found]/page.js"
-    ],
-    "/(sidebar)/[...not_found]/layout": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(sidebar)/[...not_found]/layout.js"
     ]
   }
 }
