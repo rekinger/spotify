@@ -51,7 +51,7 @@ export default function ArtistComponent() {
                     animate={{ opacity: 1, marginTop: 0 }}
                     transition={{duration:0.3}}
                     className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full">
-                        {topArtists.data?.map((item, index) => (
+                        {topArtists.data?.map((item, _index) => (
                             <motion.div
                                 initial={{opacity:0}}
                                 animate={{opacity:1}}

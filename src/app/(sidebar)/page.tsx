@@ -62,7 +62,7 @@ export default function ProfileChild() {
       </div>
       <motion.div initial={{opacity:0, marginTop:8}} animate={{opacity:1, marginTop:0}} className="flex flex-col flex-1">
         {
-          recent.data?.map((item, index) => {
+          recent.data?.map((item, _index) => {
             const timeObj = new Date(item.played_at);
             const readableTime = timeObj.toLocaleString('en-US', {year:'numeric', month:'long', day:'2-digit', hour:'numeric', minute:'numeric'});
             return (

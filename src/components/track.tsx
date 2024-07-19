@@ -2,12 +2,9 @@
   "use client";
 
 import { Skeleton } from "@nextui-org/skeleton";
-import localFont from 'next/font/local';
 import NextImage from "next/image";
 import { useState } from "react";
 import type { Artist, Image } from "../types/types";
-
-const myFont = localFont({src: "../public/CircularStd-Black.otf"})
 
 function getDuration(ms: number): string {
     const date = new Date(ms);

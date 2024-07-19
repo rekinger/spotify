@@ -80,7 +80,7 @@ export const meRouter = createTRPCRouter({
         console.log("pinged getTopArtists")
         const accessToken = ctx.session?.accessToken
 
-        let time_range = input.time_range
+        const time_range = input.time_range
 
         try {
           const response = await fetch(`https://api.spotify.com/v1/me/top/artists?time_range=${time_range}`, {

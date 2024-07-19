@@ -65,7 +65,7 @@ async function refreshAccessToken(token: string) : Promise<SpotifyRefresh> {
       expires_in: (response as SpotifyRefresh).expires_in
     }
     
-  } catch (error) {
+  } catch (_error) {
     return {
       access_token: "none",
       expires_in: 0
@@ -102,7 +102,7 @@ export const authOptions: NextAuthOptions = {
 
       return defaultSpotifyJWT;
     },
-    async session({ session, token }) {
+    session({ session, token }) {
       session.accessToken = (token as SpotifyJWT).accessToken;
       session.refreshToken = (token as SpotifyJWT).refreshToken;
       session.accessTokenExpires = (token as SpotifyJWT).accessTokenExpires;
