@@ -99,7 +99,7 @@ export interface Artist {
   type: string;
   uri: string;
   popularity: number;
-  genres: String[];
+  genres: string[];
   images: Image[];
 }
 
