@@ -17,6 +17,7 @@
   "dependencies": {
     "@auth/prisma-adapter": "^1.6.0",
     "@nextui-org/button": "^2.0.34",
+    "@nextui-org/input": "^2.2.4",
     "@nextui-org/skeleton": "^2.0.29",
     "@nextui-org/system": "^2.2.2",
     "@nextui-org/tabs": "^2.0.32",
@@ -39,6 +40,7 @@
     "react-spinners": "^0.14.1",
     "server-only": "^0.0.1",
     "superjson": "^2.2.1",
+    "use-debounce": "^10.0.1",
     "zod": "^3.23.3"
   },
   "devDependencies": {
