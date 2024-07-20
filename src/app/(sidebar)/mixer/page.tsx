@@ -38,7 +38,7 @@ export default function Mixer() {
                 <AnimatePresence>
                     {
                         popoverOpen ? (
-                                <motion.div initial={{ opacity: 0, top: 52 }} animate={{ opacity: 1, top: 44}} exit={{opacity:0, top:52}} transition={{duration:0.15}} className="absolute flex flex-col items-center justify-center w-full h-auto max-h-64 overflow-scroll overflow-x-hidden rounded-sm top-11 left-0 py-2 z-10" style={{backgroundColor:'#27272a'}}>
+                                <motion.div initial={{ opacity: 0, top: 52 }} animate={{ opacity: 1, top: 44}} exit={{opacity:0, top:52}} transition={{duration:0.15}} className="absolute flex flex-col items-center justify-center w-full h-auto max-h-64 overflow-scroll overflow-x-hidden rounded-sm top-11 left-0 py-2 z-10 bg-[#191919]">
                                     <div className="flex w-full justify-end">
                                         <div className="p-1 cursor-pointer hover:opacity-65 active:opacity-40">
                                             <IoClose onClick={() => {setPopoverOpen(false)}} color='white' size={20} />
@@ -66,7 +66,9 @@ export default function Mixer() {
                         null
                     }
                 </AnimatePresence>
-                <Input onChange={(e) => debouncedSearch(e.target.value)} startContent={<FaSearch color={'rgb(29, 185, 84)'} size={15}/>} variant="flat" placeholder="Search Artists, Tracks, Genres" />
+                <Input onChange={(e) => debouncedSearch(e.target.value)} classNames={{
+                    inputWrapper: ["bg-[#191919] hover:!bg-[#202020] focus-within:!bg-[#191919]"],
+                    }} startContent={<FaSearch color={'rgb(29, 185, 84)'} size={15}/>} variant="flat" placeholder="Search Artists, Tracks, Genres" />
             </div>
             <div>
                 <p className="p-0 m-0 text-xl">
