@@ -7,8 +7,7 @@ import { FaSearch } from "react-icons/fa";
 import { useDebouncedCallback } from 'use-debounce';
 
 export default function Mixer() {
-    const [ingredients, setIngredients] = useState<(Artist | Track | string)[]>([])
-    const [userSearch, setUserSearch] = useState<string>("")
+    const [ingredients, _setIngredients] = useState<(Artist | Track | string)[]>([])
 
     const debouncedSearch = useDebouncedCallback(
         (value: string) => {
