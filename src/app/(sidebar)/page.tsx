@@ -14,7 +14,7 @@ const myFont = localFont({ src: '../../public/CircularStd-Black.otf' })
 
 export default function ProfileChild() {
   const me = api.me.getMe.useQuery(undefined, {staleTime: 20 * 60 * 1000})
-  const recent = api.me.getRecent.useQuery(undefined, {staleTime: 5 * 60 * 1000})
+  const recent = api.me.getRecent.useQuery(undefined, {staleTime: 60 * 1000})
 
   if(me.isLoading || recent.isLoading) {
     return (
@@ -30,7 +30,7 @@ export default function ProfileChild() {
   }
  
   return (
-    <div className="flex flex-1 w-11/12 sm:w-5/6 px-2 sm:px-6 flex-col page-body overflow-y-scroll overflow-x-hidden">
+    <div className="flex flex-1 w-11/12 sm:w-5/6 px-2 sm:px-6 flex-col page-body overflow-y-scroll overflow-x-hidden py-8">
       <motion.div initial={{opacity:0, marginTop:8}} animate={{opacity:1, marginTop:0}} className="flex flex-col justify-center items-center gap-y-1">
           <div className="relative w-28 h-28 sm:w-36 sm:h-36 md:h-44 md:w-44 lg:h-56 lg:w-56">
             <Image className="rounded-full" unoptimized layout="fill" objectFit="cover" alt="Profile Picture" src={me.data?.image || defaultImage} />
@@ -72,9 +72,6 @@ export default function ProfileChild() {
             )
           })
         }
-        <div className='min-h-5 w-3'>
-          <span></span>
-        </div>
       </motion.div>
     </div>
   )

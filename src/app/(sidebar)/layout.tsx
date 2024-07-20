@@ -51,7 +51,7 @@ export default function RootLayout  ({
             <Suspense>
               <div className={"main " + myFont.className}>
                   <Sidebar />
-                  <div className="flex content items-center justify-center flex-1 flex-col pt-10">
+                  <div className="flex content items-center justify-center flex-1 flex-col">
                     <React.Fragment>
                       <Provider>
                         {children}
