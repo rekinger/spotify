@@ -3,8 +3,8 @@
 import clsx from "clsx";
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { GiPotionBall } from "react-icons/gi";
 import { IoIosMusicalNotes, IoMdMicrophone, IoMdPerson } from "react-icons/io";
+import { TbBlendMode } from "react-icons/tb";
 
 import localFont from 'next/font/local';
 
@@ -35,10 +35,10 @@ export const Sidebar = () => {
                         Top Tracks
                     </p>
                 </Link>
-                <Link href="/curator?history=/curator" className={clsx("sidebar-button", currentPath?.startsWith("/curator") ? "sidebar-button-active":"")}>
-                    <GiPotionBall color={"inherit"} size={25}/>
+                <Link href="/mixer?history=/mixer" className={clsx("sidebar-button", currentPath?.startsWith("/mixer") ? "sidebar-button-active":"")}>
+                    <TbBlendMode color={"inherit"} size={25}/>
                     <p className="sidebar-button-text">
-                        Curator
+                        Mixer
                     </p>
                 </Link>
             </div>
