@@ -7,6 +7,7 @@ import { Tab, Tabs } from '@nextui-org/tabs';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from "react";
 import { FaSearch } from "react-icons/fa";
+import { IoClose } from "react-icons/io5";
 import { useDebouncedCallback } from 'use-debounce';
 
 export default function Mixer() {
@@ -25,7 +26,7 @@ export default function Mixer() {
             else {
                 console.log(value)
                 setPopoverOpen(true)
-                await searchMutation.mutateAsync({search:value})
+                //await searchMutation.mutateAsync({search:value})
             }
         },
         750
@@ -37,16 +38,27 @@ export default function Mixer() {
                 <AnimatePresence>
                     {
                         popoverOpen ? (
-                                <motion.div initial={{ opacity: 0, top: 52 }} animate={{ opacity: 1, top: 44}} exit={{opacity:0, top:52}} transition={{duration:0.1}} className="absolute flex items-center justify-center w-full h-full rounded-xl top-11 left-0 overflow-hidden py-8" style={{backgroundColor:'#27272a'}}>
+                                <motion.div initial={{ opacity: 0, top: 52 }} animate={{ opacity: 1, top: 44}} exit={{opacity:0, top:52}} transition={{duration:0.15}} className="absolute flex flex-col items-center justify-center w-full h-auto max-h-64 overflow-scroll overflow-x-hidden rounded-sm top-11 left-0 py-2 z-10" style={{backgroundColor:'#27272a'}}>
+                                    <div className="flex w-full justify-end">
+                                        <div className="p-1 cursor-pointer hover:opacity-65 active:opacity-40">
+                                            <IoClose onClick={() => {setPopoverOpen(false)}} color='white' size={20} />
+                                        </div>
+                                    </div>
                                     <Tabs variant={'underlined'} aria-label="Tabs">
                                         <Tab key="artists" title="Artists">
-    
+                                            <p>
+                                                Some artists
+                                            </p>
                                         </Tab>
                                         <Tab key="tracks" title="Tracks">
-              
+                                            <p>
+                                                Some tracks
+                                            </p>
                                         </Tab>
                                         <Tab key="genres" title="Genres">
-                   
+                                            <p>
+                                                Some genres
+                                            </p>
                                         </Tab>
                                     </Tabs>
                                 </motion.div>
