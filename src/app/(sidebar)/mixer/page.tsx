@@ -9,6 +9,7 @@ import { Tab, Tabs } from '@nextui-org/tabs';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from "react";
 import { FaSearch } from "react-icons/fa";
+import { MdExpandMore } from "react-icons/md";
 import { ScaleLoader } from 'react-spinners';
 import { useDebouncedCallback } from 'use-debounce';
 
@@ -21,6 +22,7 @@ export default function Mixer() {
         (value: string) => {
             value = value.replace(/^\s+/, '');
             if(value.length < 3) {
+                searchMutation.reset()
                 setPopoverOpen(false)
             }
             else {
@@ -37,7 +39,7 @@ export default function Mixer() {
                 <AnimatePresence>
                     {
                         popoverOpen ? (
-                                <motion.div initial={{ opacity: 0, top: 52 }} animate={{ opacity: 1, top: 44,}} exit={{opacity:0, top:52}} transition={{duration:0.15}} className="absolute flex flex-col items-center justify-start w-full h-auto max-h-[75dvh] overflow-x-hidden rounded-md top-11 left-0 px-4 z-10 pt-2 bg-[#191919]">
+                                <motion.div initial={{ opacity: 0, top: 52 }} animate={{ opacity: 1, top: 44,}} exit={{opacity:0, top:52}} transition={{duration:0.15}} className="absolute flex flex-col items-center justify-start w-full h-auto max-h-[70dvh] overflow-x-hidden rounded-md top-11 left-0 px-4 z-10 pt-2 bg-[#191919]">
                                     <Tabs variant={'underlined'} aria-label="Tabs">
                                         <Tab key="artists" title="Artists" className="flex flex-col w-full items-center justify-start overflow-scroll overflow-x-hidden">
                                             {
@@ -50,7 +52,7 @@ export default function Mixer() {
                                                 ):
                                                 !searchMutation.data?.artists.length ? (
                                                     <p className="opacity-65">
-                                                        No Tracks Found
+                                                        No Artists Found - Ensure Search is 3+ Characters
                                                     </p>
                                                 ):
                                                 searchMutation.data?.artists.map((item, _index) => {
@@ -71,7 +73,7 @@ export default function Mixer() {
                                                 ):
                                                 !searchMutation.data?.tracks.length ? (
                                                     <p className="opacity-65">
-                                                        No Tracks Found
+                                                        No Tracks Found - Ensure Search is 3+ Characters
                                                     </p>
                                                 ):
                                                 searchMutation.data?.tracks.map((item, _index) => {
@@ -94,7 +96,7 @@ export default function Mixer() {
                 </AnimatePresence>
                 <Input onChange={(e) => debouncedSearch(e.target.value)} spellCheck={false} classNames={{
                     inputWrapper: ["bg-[#191919] hover:!bg-[#202020] focus-within:!bg-[#191919] rounded-md"], input: "text-md"
-                    }} startContent={<FaSearch color={'rgb(29, 185, 84)'} size={15}/>} variant="flat" placeholder="Search Artists, Tracks, Genres" />
+                    }} startContent={<FaSearch color={'rgb(29, 185, 84)'} size={15}/>} endContent={<div className="cursor-pointer active:opacity-65" onClick={() => {setPopoverOpen(!popoverOpen)}}><MdExpandMore color="white" size={27} style={{transform: popoverOpen ? "rotateX(360deg)": "rotateX(180deg)", transition:"transform 0.3s linear"}}/></div>} variant="flat" placeholder="Search Artists, Tracks, Genres" />
             </div>
             <div>
                 <p className="p-0 m-0 text-xl">

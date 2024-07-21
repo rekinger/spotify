@@ -35,7 +35,7 @@ export function SearchTrack({ name, artists, albumImages, id }: { name: string, 
                 </div>
             </div>
             <Tooltip key={id} closeDelay={0} className={`${myFont.className} p-2`} showArrow={true} placement="left" content={"Add Ingredient"}>
-                <div className="ml-auto cursor-pointer hover:opacity-65 active:opacity-50">
+                <div className="ml-auto cursor-pointer active:opacity-50">
                     <MdAdd size={30} color="white" />
                 </div>
             </Tooltip>
