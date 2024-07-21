@@ -3,7 +3,7 @@
 import { SearchArtist } from '@/src/components/searchartist';
 import { SearchTrack } from '@/src/components/searchtrack';
 import { api } from '@/src/trpc/react';
-import type { Artist, Track } from "@/src/types/types";
+import type { Artist, Track as TrackType } from "@/src/types/types";
 import { Input } from "@nextui-org/input";
 import { Tab, Tabs } from '@nextui-org/tabs';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -14,7 +14,7 @@ import { ScaleLoader } from 'react-spinners';
 import { useDebouncedCallback } from 'use-debounce';
 
 export default function Mixer() {
-    const [ingredients, setIngredients] = useState<{artists: Artist[], tracks: Track[], genres:string[]}>({artists:[], tracks:[], genres:[]})
+    const [ingredients, _setIngredients] = useState<(Artist | TrackType | string)[]>([])
     const [popoverOpen, setPopoverOpen] = useState<boolean>(false)
     const searchMutation = api.me.search.useMutation()
 
@@ -23,6 +23,7 @@ export default function Mixer() {
             value = value.replace(/^\s+/, '');
             if(value.length < 3) {
                 searchMutation.reset()
+                setPopoverOpen(false)
             }
             else {
                 setPopoverOpen(true)
@@ -56,7 +57,7 @@ export default function Mixer() {
                                                 ):
                                                 searchMutation.data?.artists.map((item, _index) => {
                                                     return (
-                                                        <SearchArtist key={item.id} artist={item} setIngredients={setIngredients}/>
+                                                        <SearchArtist key={item.id} id={item.id} name={item.name} images={item.images} genres={item.genres}/>
                                                     )
                                                 })
                                             }
@@ -77,7 +78,7 @@ export default function Mixer() {
                                                 ):
                                                 searchMutation.data?.tracks.map((item, _index) => {
                                                     return (
-                                                        <SearchTrack key={item.id} track={item} setIngredients={setIngredients}/>
+                                                        <SearchTrack key={item.id} id={item.id} name={item.name} artists={item.artists} albumImages={item.album.images}/>
                                                     )
                                                 })
                                             }
@@ -95,7 +96,7 @@ export default function Mixer() {
                 </AnimatePresence>
                 <Input onChange={(e) => debouncedSearch(e.target.value)} spellCheck={false} classNames={{
                     inputWrapper: ["bg-[#191919] hover:!bg-[#202020] focus-within:!bg-[#191919] rounded-md"], input: "text-md"
-                    }} startContent={<FaSearch color={'rgb(29, 185, 84)'} size={15}/>} endContent={<div className="cursor-pointer active:opacity-65" onClick={() => {setPopoverOpen(!popoverOpen)}}><MdExpandMore color="white" size={27} style={{transform: popoverOpen ? "rotateX(360deg)": "rotateX(180deg)", transition:"transform 0.15s linear"}}/></div>} variant="flat" placeholder="Search Artists, Tracks, Genres" />
+                    }} startContent={<FaSearch color={'rgb(29, 185, 84)'} size={15}/>} endContent={<div className="cursor-pointer active:opacity-65" onClick={() => {setPopoverOpen(!popoverOpen)}}><MdExpandMore color="white" size={27} style={{transform: popoverOpen ? "rotateX(360deg)": "rotateX(180deg)", transition:"transform 0.3s linear"}}/></div>} variant="flat" placeholder="Search Artists, Tracks, Genres" />
             </div>
             <div>
                 <p className="p-0 m-0 text-xl">
@@ -104,30 +105,15 @@ export default function Mixer() {
             </div>
             <div className="flex flex-col justify-center items-center px-2 py-2 min-h-20">
                 {
-                ingredients.artists.length === 0 && ingredients.tracks.length === 0 && ingredients.genres.length === 0 ? 
-                    <p className="opacity-65">
-                        No Ingredients Added
-                    </p> :
-                    <div className="flex flex-col items-center justify-center">
-                        {
-                            ingredients.artists.map((item, index) => {
-                                return (
-                                    <div key={index}>
-                                        {item.name}
-                                    </div>
-                                );
-                            })
-                        }
-                        {
-                            ingredients.tracks.map((item, index) => {
-                                return (
-                                    <div key={index}>
-                                        {item.name}
-                                    </div>
-                                );
-                            })
-                        }
-                    </div>
+                    ingredients.length === 0 ? (
+                        <p className="opacity-65">
+                            No Ingredients Added
+                        </p>
+                    ):
+                    (
+                        <div>
+                        </div>
+                    )
                 }
             </div>
         </div>
