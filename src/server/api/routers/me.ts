@@ -4,15 +4,14 @@ import {
   publicProcedure
 } from "../trpc";
 
-import type { Artist, meSpotify, RecentlyPlayed } from "@/src/types/types";
+import type { Artist, meSpotify, RecentlyPlayed, Track } from "@/src/types/types";
 
-const genres: string[] =  ["acoustic", "afrobeat", "alt-rock", "alternative", "ambient", "anime", "black-metal", "bluegrass", "blues", "bossanova", "brazil", "breakbeat", "british", "cantopop", "chicago-house", "children", "chill", "classical", "club", "comedy", "country", "dance", "dancehall", "death-metal", "deep-house", "detroit-techno", "disco", "disney", "drum-and-bass", "dub", "dubstep", "edm", "electro", "electronic", "emo", "folk", "forro", "french", "funk", "garage", "german", "gospel", "goth", "grindcore", "groove", "grunge", "guitar", "happy", "hard-rock", "hardcore", "hardstyle", "heavy-metal", "hip-hop", "holidays", "honky-tonk", "house", "idm", "indian", "indie", "indie-pop", "industrial", "iranian", "j-dance", "j-idol", "j-pop", "j-rock", "jazz", "k-pop", "kids", "latin", "latino", "malay", "mandopop", "metal", "metal-misc", "metalcore", "minimal-techno", "movies", "mpb", "new-age", "new-release", "opera", "pagode", "party", "philippines-opm", "piano", "pop", "pop-film", "post-dubstep", "power-pop", "progressive-house", "psych-rock", "punk", "punk-rock", "r-n-b", "rainy-day", "reggae", "reggaeton", "road-trip", "rock", "rock-n-roll", "rockabilly", "romance", "sad", "salsa", "samba", "sertanejo", "show-tunes", "singer-songwriter", "ska", "sleep", "songwriter", "soul", "soundtracks", "spanish", "study", "summer", "swedish", "synth-pop", "tango", "techno", "trance", "trip-hop", "turkish", "work-out", "world-music"]
+const _genres: string[] =  ["acoustic", "afrobeat", "alt-rock", "alternative", "ambient", "anime", "black-metal", "bluegrass", "blues", "bossanova", "brazil", "breakbeat", "british", "cantopop", "chicago-house", "children", "chill", "classical", "club", "comedy", "country", "dance", "dancehall", "death-metal", "deep-house", "detroit-techno", "disco", "disney", "drum-and-bass", "dub", "dubstep", "edm", "electro", "electronic", "emo", "folk", "forro", "french", "funk", "garage", "german", "gospel", "goth", "grindcore", "groove", "grunge", "guitar", "happy", "hard-rock", "hardcore", "hardstyle", "heavy-metal", "hip-hop", "holidays", "honky-tonk", "house", "idm", "indian", "indie", "indie-pop", "industrial", "iranian", "j-dance", "j-idol", "j-pop", "j-rock", "jazz", "k-pop", "kids", "latin", "latino", "malay", "mandopop", "metal", "metal-misc", "metalcore", "minimal-techno", "movies", "mpb", "new-age", "new-release", "opera", "pagode", "party", "philippines-opm", "piano", "pop", "pop-film", "post-dubstep", "power-pop", "progressive-house", "psych-rock", "punk", "punk-rock", "r-n-b", "rainy-day", "reggae", "reggaeton", "road-trip", "rock", "rock-n-roll", "rockabilly", "romance", "sad", "salsa", "samba", "sertanejo", "show-tunes", "singer-songwriter", "ska", "sleep", "songwriter", "soul", "soundtracks", "spanish", "study", "summer", "swedish", "synth-pop", "tango", "techno", "trance", "trip-hop", "turkish", "work-out", "world-music"]
 
 export const meRouter = createTRPCRouter({
   getMe: publicProcedure
     .query(async ({ctx}) => {
 
-        console.log("pinged getMe")
         const accessToken = ctx.session?.accessToken
 
         try {
@@ -51,7 +50,6 @@ export const meRouter = createTRPCRouter({
     getRecent: publicProcedure
     .query(async ({ctx}) => {
 
-        console.log("pinged getRecent")
         const accessToken = ctx.session?.accessToken
 
         try {
@@ -77,7 +75,6 @@ export const meRouter = createTRPCRouter({
     .input(z.object({ time_range: z.string() }))
     .query(async ({input, ctx}) => {
 
-        console.log("pinged getTopArtists")
         const accessToken = ctx.session?.accessToken
 
         const time_range = input.time_range
@@ -115,7 +112,11 @@ export const meRouter = createTRPCRouter({
         search = search.replace(/&/g, '');
 
         if(search.length < 3) {
-          return []
+          return {
+            artists: [],
+            tracks: [],
+            genres:[]
+          }
         }
 
         const query = encodeURI(`https://api.spotify.com/v1/search?q=${search}&type=artist,track&limit=10`)
@@ -132,13 +133,19 @@ export const meRouter = createTRPCRouter({
           
           const data = await response.json()
 
-          console.log(data)
-          
-          return []
+          return {
+            artists: (data.artists.items as Artist[]),
+            tracks: (data.tracks.items as Track[]),
+            genres: []
+          }
         }
         catch(error) {
           console.log("ERROR", error)
-          return []
+          return {
+            artists: [],
+            tracks: [],
+            genres: []
+          }
         }
     }),
 });

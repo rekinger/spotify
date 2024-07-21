@@ -108,3 +108,9 @@ export interface Image {
   height: number | null;
   width: number | null;
 }
+
+export interface SearchResult {
+  artists: Artist[],
+  tracks: Track[],
+  genres: string[]
+}
