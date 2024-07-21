@@ -9,7 +9,6 @@ import { Tab, Tabs } from '@nextui-org/tabs';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from "react";
 import { FaSearch } from "react-icons/fa";
-import { IoClose } from "react-icons/io5";
 import { ScaleLoader } from 'react-spinners';
 import { useDebouncedCallback } from 'use-debounce';
 
@@ -38,12 +37,7 @@ export default function Mixer() {
                 <AnimatePresence>
                     {
                         popoverOpen ? (
-                                <motion.div initial={{ opacity: 0, top: 52 }} animate={{ opacity: 1, top: 44,}} exit={{opacity:0, top:52}} transition={{duration:0.15}} className="absolute flex flex-col items-center justify-start w-full h-auto max-h-[75dvh] overflow-x-hidden rounded-md top-11 left-0 py-2 px-4 z-10 bg-[#191919]">
-                                    <div className="flex w-full justify-end">
-                                        <div className="p-1 cursor-pointer hover:opacity-65 active:opacity-40">
-                                            <IoClose onClick={() => {setPopoverOpen(false)}} color='white' size={20} />
-                                        </div>
-                                    </div>
+                                <motion.div initial={{ opacity: 0, top: 52 }} animate={{ opacity: 1, top: 44,}} exit={{opacity:0, top:52}} transition={{duration:0.15}} className="absolute flex flex-col items-center justify-start w-full h-auto max-h-[75dvh] overflow-x-hidden rounded-md top-11 left-0 px-4 z-10 pt-2 bg-[#191919]">
                                     <Tabs variant={'underlined'} aria-label="Tabs">
                                         <Tab key="artists" title="Artists" className="flex flex-col w-full items-center justify-start overflow-scroll overflow-x-hidden">
                                             {
