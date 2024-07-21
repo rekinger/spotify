@@ -66,8 +66,8 @@ export default function Mixer() {
                         null
                     }
                 </AnimatePresence>
-                <Input onChange={(e) => debouncedSearch(e.target.value)} classNames={{
-                    inputWrapper: ["bg-[#191919] hover:!bg-[#202020] focus-within:!bg-[#191919]"],
+                <Input onChange={(e) => debouncedSearch(e.target.value)} spellCheck={false} classNames={{
+                    inputWrapper: ["bg-[#191919] hover:!bg-[#202020] focus-within:!bg-[#191919]"], input: "text-md"
                     }} startContent={<FaSearch color={'rgb(29, 185, 84)'} size={15}/>} variant="flat" placeholder="Search Artists, Tracks, Genres" />
             </div>
             <div>
