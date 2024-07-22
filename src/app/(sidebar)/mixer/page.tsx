@@ -58,7 +58,7 @@ export default function Mixer() {
                                 <motion.div initial={{ opacity: 0, top: 52 }} animate={{ opacity: 1, top: 44,}} exit={{opacity:0, top:52}} transition={{duration:0.15}} className="absolute flex flex-col items-center justify-start w-full h-auto max-h-[70dvh] overflow-x-hidden rounded-md top-11 left-0 px-4 z-10 pt-2 bg-[#191919]">
                                     <Tabs variant={'underlined'} aria-label="Tabs">
                                         <Tab key="artists" title="Artists" className="flex flex-col w-full items-center justify-start overflow-scroll overflow-x-hidden">
-                                            <ScrollShadow size={20} className="w-full">
+                                            <ScrollShadow size={20} className="flex flex-col items-center justify-start w-full px-0 sm:px-3">
                                                 {
                                                     !currData && searchMutation.isPending ? (
                                                         <ScaleLoader
@@ -67,7 +67,7 @@ export default function Mixer() {
                                                             aria-label="Loading Spinner"
                                                         />
                                                     ):
-                                                    !currData || !currData?.artists.length  ? (
+                                                    !currData?.artists.length  ? (
                                                         <p className="opacity-65">
                                                             No Artists Found - Ensure Search is 3+ Characters
                                                         </p>
@@ -81,7 +81,7 @@ export default function Mixer() {
                                             </ScrollShadow>
                                         </Tab>
                                         <Tab key="tracks" title="Tracks" className="flex flex-col w-full items-center justify-start overflow-scroll overflow-x-hidden">
-                                            <ScrollShadow size={20} className="w-full">
+                                            <ScrollShadow size={20} className="flex flex-col items-center justify-start w-full px-0 sm:px-3">
                                                 {
                                                     !currData && searchMutation.isPending ? (
                                                         <ScaleLoader
@@ -90,7 +90,7 @@ export default function Mixer() {
                                                             aria-label="Loading Spinner"
                                                         />
                                                     ):
-                                                    !currData || !currData?.tracks.length  ? (
+                                                    !currData?.tracks.length  ? (
                                                         <p className="opacity-65">
                                                             No Artists Found - Ensure Search is 3+ Characters
                                                         </p>
