@@ -7,7 +7,7 @@ import type { Artist, Track as TrackType } from "@/src/types/types";
 import { Input } from "@nextui-org/input";
 import { Tab, Tabs } from '@nextui-org/tabs';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { MdExpandMore } from "react-icons/md";
 import { ScaleLoader } from 'react-spinners';
@@ -16,36 +16,22 @@ import { useDebouncedCallback } from 'use-debounce';
 export default function Mixer() {
     const [ingredients, _setIngredients] = useState<(Artist | TrackType | string)[]>([])
     const [popoverOpen, setPopoverOpen] = useState<boolean>(false)
-    const searchMutation = api.me.search.useMutation({})
-    const [currData, setCurrData] = useState<{ artists: Artist[], tracks: TrackType[], genres:string[] } | null>(null);
+    const searchMutation = api.me.search.useMutation()
 
     const debouncedSearch = useDebouncedCallback (
         (value: string) => {
             value = value.replace(/^\s+/, '');
-
-            if(value.length === 0) {
+            if(value.length < 3) {
+                searchMutation.reset()
                 setPopoverOpen(false)
             }
             else {
                 setPopoverOpen(true)
-            }
-
-            if(value.length < 3) {
-                searchMutation.reset()
-                setCurrData(null)
-            }
-            else {
                 searchMutation.mutate({search:value})
             }
         },
-        400
+        750
       );
-
-    useEffect(() => {
-        if(searchMutation.data) {
-            setCurrData(searchMutation.data)
-        }
-    }, [searchMutation.data])
 
     return (
         <div className="flex flex-1 relative w-11/12 sm:w-5/6 px-2 sm:px-6 flex-col page-body py-8 gap-y-4">
@@ -57,19 +43,19 @@ export default function Mixer() {
                                     <Tabs variant={'underlined'} aria-label="Tabs">
                                         <Tab key="artists" title="Artists" className="flex flex-col w-full items-center justify-start overflow-scroll overflow-x-hidden">
                                             {
-                                                !currData && searchMutation.isPending ? (
+                                                searchMutation.isPending ? (
                                                     <ScaleLoader
                                                         color={"rgb(29, 185, 84)"}
                                                         loading={true}
                                                         aria-label="Loading Spinner"
                                                     />
                                                 ):
-                                                !currData || !currData?.artists.length  ? (
+                                                !searchMutation.data?.artists.length ? (
                                                     <p className="opacity-65">
                                                         No Artists Found - Ensure Search is 3+ Characters
                                                     </p>
                                                 ):
-                                                currData.artists.map((item, _index) => {
+                                                searchMutation.data?.artists.map((item, _index) => {
                                                     return (
                                                         <SearchArtist key={item.id} id={item.id} name={item.name} images={item.images} genres={item.genres}/>
                                                     )
@@ -78,19 +64,19 @@ export default function Mixer() {
                                         </Tab>
                                         <Tab key="tracks" title="Tracks" className="flex flex-col w-full items-center justify-start overflow-scroll overflow-x-hidden">
                                         {
-                                                !currData && searchMutation.isPending ? (
+                                                searchMutation.isPending ? (
                                                     <ScaleLoader
                                                         color={"rgb(29, 185, 84)"}
                                                         loading={true}
                                                         aria-label="Loading Spinner"
                                                     />
                                                 ):
-                                                !currData || !currData?.tracks.length  ? (
+                                                !searchMutation.data?.tracks.length ? (
                                                     <p className="opacity-65">
-                                                        No Artists Found - Ensure Search is 3+ Characters
+                                                        No Tracks Found - Ensure Search is 3+ Characters
                                                     </p>
                                                 ):
-                                                currData.tracks.map((item, _index) => {
+                                                searchMutation.data?.tracks.map((item, _index) => {
                                                     return (
                                                         <SearchTrack key={item.id} id={item.id} name={item.name} artists={item.artists} albumImages={item.album.images}/>
                                                     )
@@ -108,7 +94,7 @@ export default function Mixer() {
                         null
                     }
                 </AnimatePresence>
-                <Input onFocus={() => {setPopoverOpen(true)}} onChange={(e) => debouncedSearch(e.target.value)} spellCheck={false} classNames={{
+                <Input onChange={(e) => debouncedSearch(e.target.value)} spellCheck={false} classNames={{
                     inputWrapper: ["bg-[#191919] hover:!bg-[#202020] focus-within:!bg-[#191919] rounded-md"], input: "text-md"
                     }} startContent={<FaSearch color={'rgb(29, 185, 84)'} size={15}/>} endContent={<div className="cursor-pointer active:opacity-65" onClick={() => {setPopoverOpen(!popoverOpen)}}><MdExpandMore color="white" size={27} style={{transform: popoverOpen ? "rotateX(360deg)": "rotateX(180deg)", transition:"transform 0.3s linear"}}/></div>} variant="flat" placeholder="Search Artists, Tracks, Genres" />
             </div>
