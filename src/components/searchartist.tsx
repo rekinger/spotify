@@ -18,7 +18,7 @@ export function SearchArtist({ name, images, id, genres }: { name: string, image
         <div className="flex track w-full rounded-md py-3 items-center">
             <div className="relative w-14 h-14">
                 <Skeleton className="h-14 w-14 absolute top-0 left-0" style={{ opacity: imageLoaded ? 0 : 1 }} />
-                <NextImage onLoad={() => { setImageLoaded(true) }} unoptimized alt="Album Image" src={images.length > 0 ? images[0].url:defaultImage} height={56} width={56} />
+                <NextImage onLoad={() => { setImageLoaded(true) }} unoptimized alt="Album Image" src={images.length > 0 ? images[0].url:defaultImage} layout="fill" objectFit="cover" />
             </div>
             <div className="flex flex-col ml-2 truncate" style={{ maxWidth: '65%' }}>
                 <p className="truncate">
