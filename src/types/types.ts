@@ -1,3 +1,5 @@
+import { StaticImageData } from "next/image";
+
 export interface meSpotify {
     display_name: string,
     external_urls: {
@@ -45,6 +47,13 @@ export interface RecentlyPlayed {
   };
   limit: number;
   href: string;
+}
+
+export interface Ingredient {
+  image: string | StaticImageData,
+  title: string,
+  type: string,
+  id: string
 }
 
 export interface Track {

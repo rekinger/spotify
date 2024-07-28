@@ -5,14 +5,36 @@ import { Skeleton } from "@nextui-org/skeleton";
 import { Tooltip } from "@nextui-org/tooltip";
 import localFont from 'next/font/local';
 import NextImage from "next/image";
-import { useState } from "react";
-import { MdAdd } from "react-icons/md";
-import type { Artist, Image } from "../types/types";
+import { Dispatch, SetStateAction, useState } from "react";
+import { MdAdd, MdCheck } from "react-icons/md";
+import { toast } from 'sonner';
+import type { Artist, Image, Ingredient } from "../types/types";
 
 const myFont = localFont({ src: '../public/CircularStd-Black.otf' })
 
-export function SearchTrack({ name, artists, albumImages, id }: { name: string, artists: Artist[], albumImages: Image[], id: string }) {
+export function SearchTrack({ name, artists, albumImages, id, setIngredients, added}: { name: string, artists: Artist[], albumImages: Image[], id: string, setIngredients:Dispatch<SetStateAction<Ingredient[]>>, added:boolean }) {
     const [imageLoaded, setImageLoaded] = useState(false)
+
+    function addTrack() {
+        setIngredients((oldIngredients: Ingredient[]) => {
+
+            if(oldIngredients.length >= 5) {
+                toast('Max 5 Ingredients Allowed!')
+
+                return oldIngredients
+            }
+            const addTrack: Ingredient = {
+                image: albumImages.length > 0 ? albumImages[0].url:defaultImage,
+                title: name,
+                id: id, 
+                type: "Track"
+            }
+
+            const newIngredients = [...oldIngredients, addTrack]
+
+            return newIngredients
+        })
+    }
 
     return (
         <div className="flex track w-full rounded-md py-3 items-center">
@@ -34,10 +56,19 @@ export function SearchTrack({ name, artists, albumImages, id }: { name: string, 
                     }
                 </div>
             </div>
-            <Tooltip key={id} closeDelay={0} className={`${myFont.className} p-2`} showArrow={true} placement="left" content={"Add Ingredient"}>
-                <div className="ml-auto cursor-pointer active:opacity-50">
-                    <MdAdd size={30} color="white" />
-                </div>
+            <Tooltip key={id} closeDelay={0} className={`${myFont.className} p-2`} showArrow={true} placement="left" content={added ? "Ingredient Added": "Add Ingredient"}>
+                {
+                    added ? (
+                        <div className="ml-auto">
+                            <MdCheck size={30} color="white" />
+                        </div>
+                    ):
+                    (
+                        <div onClick={addTrack} className="ml-auto cursor-pointer active:opacity-50">
+                            <MdAdd size={30} color="white" />
+                        </div>
+                    )
+                }
             </Tooltip>
         </div>
     )
