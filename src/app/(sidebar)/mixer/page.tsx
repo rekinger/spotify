@@ -5,6 +5,7 @@ import { Ingredient as IngredientComponent } from '@/src/components/ingredient';
 import { SearchArtist } from '@/src/components/searchartist';
 import { SearchTrack } from '@/src/components/searchtrack';
 import { Track } from '@/src/components/track';
+import defaultImage from '@/src/public/defaulttrack.png';
 import { api } from '@/src/trpc/react';
 import type { Artist, Ingredient, Track as TrackType } from "@/src/types/types";
 import { Button } from '@nextui-org/button';
@@ -14,7 +15,8 @@ import { ScrollShadow } from '@nextui-org/scroll-shadow';
 import { Tab, Tabs } from '@nextui-org/tabs';
 import { AnimatePresence, motion } from 'framer-motion';
 import localFont from 'next/font/local';
-import { useEffect, useState } from "react";
+import NextImage from "next/image";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { MdExpandMore } from "react-icons/md";
 import { ScaleLoader } from 'react-spinners';
@@ -29,6 +31,28 @@ export default function Mixer() {
     const mixMutation = api.me.createMix.useMutation()
     const [currData, setCurrData] = useState<{ artists: Artist[], tracks: TrackType[], genres:string[] } | null>(null);
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
+    const [uploadedImage, setUploadedImage] = useState<string | null>(null)
+    const hiddenFileInput = useRef<HTMLInputElement | null>(null);
+
+    function uploadFile() {
+        hiddenFileInput.current?.click(); 
+    }
+
+    function userImageUpload(event: ChangeEvent<HTMLInputElement>) {
+        const reader = new FileReader();
+
+        if(event.target.files && event.target.files.length > 0) {
+
+            reader.onloadend = function() {
+                if(reader.result) {
+                    setUploadedImage(reader.result.toString())
+                    console.log(reader.result.toString())
+                }
+            }
+
+            reader.readAsDataURL(event.target.files[0])
+        }
+    }
 
     function createMix() {
         onOpen()
@@ -79,38 +103,47 @@ export default function Mixer() {
     return (
         <div className="flex flex-1 relative w-11/12 sm:w-5/6 px-2 sm:px-6 flex-col page-body gap-y-4 overflow-hidden">
             <Modal scrollBehavior="inside" size="4xl"  className={'z-50 ' + myFont.className} isOpen={isOpen} onOpenChange={onOpenChange}>
-                                    <ModalContent>
-                                        <ModalHeader className="flex flex-col">
-                                            Your Mix
-                                        </ModalHeader>
-                                        <ModalBody>
-                                            <div className='flex flex-col h-[70dvh] justify-start items-center overflow-scroll overflow-x-hidden px-0 sm:px-3'>
-                                                {
-                                                    mixMutation.isPending ? (
-                                                        <div className="flex w-full h-full items-center justify-center">
-                                                            <ScaleLoader
-                                                                color={"rgb(29, 185, 84)"}
-                                                                loading={true}
-                                                                aria-label="Loading Spinner"
-                                                            />
-                                                        </div>
-                                                    ):
-                                                    (
-                                                        <motion.div initial={{marginTop:10, opacity:0}} animate={{marginTop:0, opacity:1}} className="flex flex-col w-full h-full justify-start items-center">
-                                                            {
-                                                                mixMutation.data?.tracks?.map((item, _index) => {
-                                                                    return (
-                                                                        <Track name={item.name} ms={item.duration_ms} artists={item.artists} albumImages={item.album.images}/>
-                                                                    )
-                                                                })
-                                                            }
-                                                        </motion.div>
-                                                    )
-                                                }
-                                            </div>
-                                        </ModalBody>
-                                    </ModalContent>
-                                </Modal>
+                <ModalContent>
+                    <ModalHeader className="flex flex-col">
+                        Your Mix
+                    </ModalHeader>
+                    <ModalBody>
+                        <div className='flex flex-col h-[70dvh] justify-start items-center overflow-scroll overflow-x-hidden px-0 sm:px-3'>
+                            <div className="flex flex-col w-full justify-start items-center">
+                                <div onClick={uploadFile} className="flex flex-col justify-center items-center cursor-pointer">
+                                    <NextImage alt="uploaded image" height={100} width={100} src={uploadedImage ? uploadedImage: defaultImage}/>
+                                    <p className="opacity-65">
+                                        Customize Playlist Image
+                                    </p>
+                                </div>
+                                <input ref={hiddenFileInput} style={{display:'none'}} onChange={(e) => userImageUpload(e)} type="file" id="img" name="img" accept="image/*" />
+                            </div>
+                            {
+                                mixMutation.isPending ? (
+                                    <div className="flex w-full h-full items-center justify-center">
+                                        <ScaleLoader
+                                            color={"rgb(29, 185, 84)"}
+                                            loading={true}
+                                            aria-label="Loading Spinner"
+                                        />
+                                    </div>
+                                ):
+                                (
+                                    <motion.div initial={{marginTop:10, opacity:0}} animate={{marginTop:0, opacity:1}} className="flex flex-col w-full h-full justify-start items-center">
+                                        {
+                                            mixMutation.data?.tracks?.map((item, _index) => {
+                                                return (
+                                                    <Track name={item.name} ms={item.duration_ms} artists={item.artists} albumImages={item.album.images}/>
+                                                )
+                                            })
+                                        }
+                                    </motion.div>
+                                )
+                            }
+                        </div>
+                    </ModalBody>
+                </ModalContent>
+            </Modal>
             <div className="relative flex flex-row pt-8">
                 <AnimatePresence>
                     {
