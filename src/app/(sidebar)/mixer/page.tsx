@@ -140,6 +140,7 @@ export default function Mixer() {
                 </p>
             </div>
             <div className="flex flex-col items-center justify-start w-full overflow-scroll overflow-x-hidden pb-8">
+                <AnimatePresence>
                     {
                         ingredients.length === 0 ? (
                             <p className="opacity-65">
@@ -166,6 +167,7 @@ export default function Mixer() {
                         ):
                         null
                     }
+                </AnimatePresence>
             </div>
         </div>
     )
