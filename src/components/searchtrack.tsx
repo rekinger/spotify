@@ -23,6 +23,7 @@ export function SearchTrack({ name, artists, albumImages, id, setIngredients, ad
 
                 return oldIngredients
             }
+
             const addTrack: Ingredient = {
                 image: albumImages.length > 0 ? albumImages[0].url:defaultImage,
                 title: name,
