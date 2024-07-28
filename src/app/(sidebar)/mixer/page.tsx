@@ -98,7 +98,7 @@ export default function Mixer() {
                                                     (
                                                         <motion.div initial={{marginTop:10, opacity:0}} animate={{marginTop:0, opacity:1}} className="flex flex-col w-full h-full justify-start items-center">
                                                             {
-                                                                mixMutation.data?.tracks?.map((item, index) => {
+                                                                mixMutation.data?.tracks?.map((item, _index) => {
                                                                     return (
                                                                         <Track name={item.name} ms={item.duration_ms} artists={item.artists} albumImages={item.album.images}/>
                                                                     )
@@ -118,7 +118,7 @@ export default function Mixer() {
                                 <motion.div initial={{ opacity: 0, top: 80 }} animate={{ opacity: 1, top: 75,}} exit={{opacity:0, top:80}} transition={{duration:0.15}} className="absolute flex flex-col items-center justify-start w-full h-auto max-h-[70dvh] overflow-x-hidden rounded-md top-20 left-0 px-4 z-20 pt-2 bg-[#191919]">
                                     <Tabs variant={'underlined'} aria-label="Tabs">
                                         <Tab key="artists" title="Artists" className="flex flex-col w-full items-center justify-start overflow-scroll overflow-x-hidden">
-                                            <ScrollShadow size={20} className="flex flex-col items-center justify-start w-full px-0 sm:px-3">
+                                            <ScrollShadow size={20} className="flex flex-col items-center justify-start w-full px-3">
                                                 {
                                                     !currData || !currData?.artists.length  ? (
                                                         <p className="opacity-65">
@@ -169,13 +169,13 @@ export default function Mixer() {
                     Ingredients
                 </p>
             </div>
-            <div className="flex flex-col items-center justify-start w-full overflow-scroll overflow-x-hidden pb-8">
+            <motion.div layout="size" transition={{delay:0.3, duration:0.4}} className="flex flex-col items-center justify-start h-full w-full overflow-scroll overflow-x-hidden pb-8">
                 <AnimatePresence>
                     {
                         ingredients.length === 0 ? (
-                            <p className="opacity-65">
+                            <motion.p layout="position" className="opacity-65">
                                 No Ingredients Added
-                            </p>
+                            </motion.p>
                         ):
                         (
                             ingredients.map((item, index) => {
@@ -187,7 +187,7 @@ export default function Mixer() {
                     }
                     {
                         ingredients.length > 0 ? (
-                            <motion.div exit={{opacity:0}}>
+                            <motion.div layout="position" exit={{opacity:0}}>
                                 <Button onPress={createMix} color="success" className="w-36 sm:w-44 md:w-48 lg:w-52 h-10 rounded-lg">
                                     <p className="font-bold text-lg p-0 m-0">
                                         Create Mix
@@ -198,7 +198,7 @@ export default function Mixer() {
                         null
                     }
                 </AnimatePresence>
-            </div>
+            </motion.div>
         </div>
     )
 }
