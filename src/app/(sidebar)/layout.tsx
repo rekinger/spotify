@@ -17,6 +17,7 @@ import { Provider } from "@/src/components/provider";
 import React from "react";
 
 import { TRPCReactProvider } from "@/src/trpc/react";
+import { Toaster } from "sonner";
 
 const myFont = localFont({ src: '../../public/CircularStd-Black.otf' })
 
@@ -50,6 +51,9 @@ export default function RootLayout  ({
           <Providers>
             <Suspense>
               <div className={"main " + myFont.className}>
+              <Toaster toastOptions={{
+                    className: 'bg-[#191919] border-1 border-[#242424] text-white',
+                }} />
                   <Sidebar />
                   <div className="flex content items-center justify-center flex-1 flex-col">
                     <React.Fragment>

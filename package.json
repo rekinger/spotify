@@ -18,6 +18,7 @@
     "@auth/prisma-adapter": "^1.6.0",
     "@nextui-org/button": "^2.0.34",
     "@nextui-org/input": "^2.2.4",
+    "@nextui-org/modal": "^2.0.39",
     "@nextui-org/popover": "^2.1.27",
     "@nextui-org/scroll-shadow": "^2.1.19",
     "@nextui-org/skeleton": "^2.0.29",
@@ -41,8 +42,10 @@
     "react-icons": "^5.2.1",
     "react-spinners": "^0.14.1",
     "server-only": "^0.0.1",
+    "sonner": "^1.5.0",
     "superjson": "^2.2.1",
     "use-debounce": "^10.0.1",
+    "vaul": "^0.9.1",
     "zod": "^3.23.3"
   },
   "devDependencies": {
