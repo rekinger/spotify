@@ -4,26 +4,50 @@
 import { Ingredient as IngredientComponent } from '@/src/components/ingredient';
 import { SearchArtist } from '@/src/components/searchartist';
 import { SearchTrack } from '@/src/components/searchtrack';
+import { Track } from '@/src/components/track';
 import { api } from '@/src/trpc/react';
 import type { Artist, Ingredient, Track as TrackType } from "@/src/types/types";
 import { Button } from '@nextui-org/button';
 import { Input } from "@nextui-org/input";
-import { Modal, ModalBody, ModalContent, useDisclosure } from '@nextui-org/modal';
+import { Modal, ModalBody, ModalContent, ModalHeader, useDisclosure } from '@nextui-org/modal';
 import { ScrollShadow } from '@nextui-org/scroll-shadow';
 import { Tab, Tabs } from '@nextui-org/tabs';
 import { AnimatePresence, motion } from 'framer-motion';
+import localFont from 'next/font/local';
 import { useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { MdExpandMore } from "react-icons/md";
+import { ScaleLoader } from 'react-spinners';
 import { useDebouncedCallback } from 'use-debounce';
+
+const myFont = localFont({ src: '../../../public/CircularStd-Black.otf' })
 
 export default function Mixer() {
     const [ingredients, setIngredients] = useState<Ingredient[]>([])
     const [popoverOpen, setPopoverOpen] = useState<boolean>(false)
-    const searchMutation = api.me.search.useMutation({})
+    const searchMutation = api.me.search.useMutation()
+    const mixMutation = api.me.createMix.useMutation()
     const [currData, setCurrData] = useState<{ artists: Artist[], tracks: TrackType[], genres:string[] } | null>(null);
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
 
+    function createMix() {
+        onOpen()
+
+        const tracks: string[] = []
+        const artists: string[] = []
+
+        ingredients.forEach(ingredient => {
+            if(ingredient.type == "Artist") {
+                artists.push(ingredient.id)
+            }
+            else if(ingredient.type == "Track") {
+                tracks.push(ingredient.id)
+            }
+        })
+
+        mixMutation.mutate({artists: artists, tracks: tracks, genres:[]})
+
+    }
     const debouncedSearch = useDebouncedCallback (
         (value: string) => {
             value = value.replace(/^\s+/, '');
@@ -54,30 +78,36 @@ export default function Mixer() {
 
     return (
         <div className="flex flex-1 relative w-11/12 sm:w-5/6 px-2 sm:px-6 flex-col page-body gap-y-4 overflow-hidden">
-            <Modal scrollBehavior="inside" size={"2xl"}  className='z-50' isOpen={isOpen} onOpenChange={onOpenChange} classNames={{
-                backdrop: "overflow-y-hidden"
-            }}>
+            <Modal scrollBehavior="inside" size="4xl"  className={'z-50 ' + myFont.className} isOpen={isOpen} onOpenChange={onOpenChange}>
                                     <ModalContent>
-                                        <ModalBody className=''>
-                                        <div className='flex flex-col h-56 overflow-scroll overflow-x-hidden'>
-                                        <span> 
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                        Nullam pulvinar risus non risus hendrerit venenatis.
-                                        Pellentesque sit amet hendrerit risus, sed porttitor quam.
-                                        </span>
-                                        <span>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                        Nullam pulvinar risus non risus hendrerit venenatis.
-                                        Pellentesque sit amet hendrerit risus, sed porttitor quam.
-                                        </span>
-                                        <span>
-                                        Magna exercitation reprehenderit magna aute tempor cupidatat consequat elit
-                                        dolor adipisicing. Mollit dolor eiusmod sunt ex incididunt cillum quis. 
-                                        Velit duis sit officia eiusmod Lorem aliqua enim laboris do dolor eiusmod. 
-                                        Et mollit incididunt nisi consectetur esse laborum eiusmod pariatur 
-                                        proident Lorem eiusmod et. Culpa deserunt nostrud ad veniam.
-                                        </span>
-                                        </div>
+                                        <ModalHeader className="flex flex-col">
+                                            Your Mix
+                                        </ModalHeader>
+                                        <ModalBody>
+                                            <div className='flex flex-col h-[70dvh] justify-start items-center overflow-scroll overflow-x-hidden px-0 sm:px-3'>
+                                                {
+                                                    mixMutation.isPending ? (
+                                                        <div className="flex w-full h-full items-center justify-center">
+                                                            <ScaleLoader
+                                                                color={"rgb(29, 185, 84)"}
+                                                                loading={true}
+                                                                aria-label="Loading Spinner"
+                                                            />
+                                                        </div>
+                                                    ):
+                                                    (
+                                                        <motion.div initial={{marginTop:10, opacity:0}} animate={{marginTop:0, opacity:1}} className="flex flex-col w-full h-full justify-start items-center">
+                                                            {
+                                                                mixMutation.data?.tracks?.map((item, index) => {
+                                                                    return (
+                                                                        <Track name={item.name} ms={item.duration_ms} artists={item.artists} albumImages={item.album.images}/>
+                                                                    )
+                                                                })
+                                                            }
+                                                        </motion.div>
+                                                    )
+                                                }
+                                            </div>
                                         </ModalBody>
                                     </ModalContent>
                                 </Modal>
@@ -158,7 +188,7 @@ export default function Mixer() {
                     {
                         ingredients.length > 0 ? (
                             <motion.div exit={{opacity:0}}>
-                                <Button onPress={onOpen} color="success" className="w-36 sm:w-44 md:w-48 lg:w-52 h-10 rounded-lg">
+                                <Button onPress={createMix} color="success" className="w-36 sm:w-44 md:w-48 lg:w-52 h-10 rounded-lg">
                                     <p className="font-bold text-lg p-0 m-0">
                                         Create Mix
                                     </p>

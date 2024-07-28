@@ -104,7 +104,6 @@ export const meRouter = createTRPCRouter({
     .input(z.object({ search: z.string() }))
     .mutation(async ({input, ctx}) => {
 
-        console.log("pinged getTopArtists")
         const accessToken = ctx.session?.accessToken
 
         let search = input.search
@@ -145,6 +144,57 @@ export const meRouter = createTRPCRouter({
             artists: [],
             tracks: [],
             genres: []
+          }
+        }
+    }),
+    createMix: publicProcedure
+    .input(z.object({ tracks: z.array(z.string()), artists: z.array(z.string()), genres: z.array(z.string()) }))
+    .mutation(async ({input, ctx}) => {
+
+      const accessToken = ctx.session?.accessToken
+
+      if(input.artists.length + input.tracks.length + input.genres.length > 5) {
+        throw new Error("Cannot make playlist with more than 5 seeds");
+      }
+
+      let artistString = ""
+      if(input.artists.length > 0) {
+        artistString = "seed_artists=" + input.artists.join()
+      }
+
+      let trackString = ""
+      if(input.artists.length > 0) {
+        trackString = artistString != "" ? "&":"" + "seed_tracks=" + input.tracks.join()
+      }
+
+      let genreString = ""
+      if(input.artists.length > 0) {
+        genreString = artistString != "" || trackString != "" ? "&":"" + "seed_genres=" + input.genres.join()
+      }
+      
+
+      const query = encodeURI(`https://api.spotify.com/v1/recommendations?` + artistString + trackString + genreString)
+
+        try {
+          const response = await fetch(query, {
+              method:"GET",
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + accessToken
+              }
+            })
+          
+          const data = await response.json()
+
+          return {
+            tracks: (data.tracks as Track[])
+          }
+        }
+        catch(error) {
+          console.log("ERROR", error)
+          return {
+            tracks: []
           }
         }
     }),
