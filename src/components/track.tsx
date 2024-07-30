@@ -68,7 +68,7 @@ export function Track({ name, ms, artists, albumImages, uri }: { name: string, m
             </div>
             <div className="flex items-center gap-x-6 ml-auto pl-2">
                 <p className="opacity-75">{getDuration(ms)}</p>
-                <Tooltip placement="right" content={"Add to Spotify Queue"}>
+                <Tooltip className={myFont.className} placement="right" content={"Add to Spotify Queue"}>
                     <div onClick={addClicked} className="flex items-center justify-center h-full cursor-pointer active:opacity-75">
                         <MdOutlineQueue color={'white'} size={20} />
                     </div>
