@@ -198,4 +198,51 @@ export const meRouter = createTRPCRouter({
           }
         }
     }),
+    addToQueue: publicProcedure
+    .input(z.object({ uri: z.string() }))
+    .mutation(async ({input, ctx}) => {
+
+      const accessToken = ctx.session?.accessToken
+
+      const query = encodeURI(`https://api.spotify.com/v1/me/player/queue?uri=${input.uri}`)
+      console.log(query)
+
+        try {
+          const response = await fetch(query, {
+              method:"POST",
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + accessToken
+              }
+            })
+
+          try {
+            const data = await response.json()
+            if(data.error) {
+              if(data.error.reason === "NO_ACTIVE_DEVICE") {
+                throw new Error("No Active Devices!");
+              }
+            }
+            else if(response.status == 204 || response.status == 200) {
+              return {
+                result: "success"
+              }
+            }
+
+              throw new Error("Spotify returned an error");
+          }
+          catch {
+            if(response.status == 204 || response.status == 200) {
+              return {
+                result: "success"
+              }
+            }
+            throw new Error("Spotify returned an error");
+          }
+        }
+        catch(error) {
+          throw new Error("Spotify returned an error");
+        }
+    }),
 });

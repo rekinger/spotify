@@ -20,6 +20,7 @@ import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { MdExpandMore } from "react-icons/md";
 import { ScaleLoader } from 'react-spinners';
+import { toast } from 'sonner';
 import { useDebouncedCallback } from 'use-debounce';
 
 const myFont = localFont({ src: '../../../public/CircularStd-Black.otf' })
@@ -45,8 +46,15 @@ export default function Mixer() {
 
             reader.onloadend = function() {
                 if(reader.result) {
-                    setUploadedImage(reader.result.toString())
-                    console.log(reader.result.toString())
+                    const sizeInBytes = 4 * Math.ceil((reader.result.toString().length / 3))*0.5624896334383812
+                    const sizeInKb=sizeInBytes/1000
+
+                    if(sizeInKb > 256) {
+                        toast("File size too large! File size must be <= 256 Kb")
+                    }
+                    else {
+                        setUploadedImage(reader.result.toString())
+                    }
                 }
             }
 
@@ -133,7 +141,7 @@ export default function Mixer() {
                                         {
                                             mixMutation.data?.tracks?.map((item, _index) => {
                                                 return (
-                                                    <Track name={item.name} ms={item.duration_ms} artists={item.artists} albumImages={item.album.images}/>
+                                                    <Track uri={item.uri} name={item.name} ms={item.duration_ms} artists={item.artists} albumImages={item.album.images}/>
                                                 )
                                             })
                                         }
