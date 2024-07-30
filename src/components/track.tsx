@@ -27,32 +27,32 @@ export function Track({ name, ms, artists, albumImages, uri }: { name: string, m
     const inProgressRef = useRef(false) // Use a ref to keep track of the function call status
 
     const addClicked = () => {
+        if (inProgressRef.current) {
+            return;
+        }
 
         inProgressRef.current = true;
-
-        const time = setTimeout(() => {
-            toast.promise(addToQueue, {
-                loading: 'Loading...',
-                success: (data) => {
-                    inProgressRef.current = false
-                    return `Song added to queue`;
-                },
-                error: (error) => {
-                    inProgressRef.current = false
-                    return "Error adding song to queue. Make sure you have an active spotify session."
-                } 
-            });
-        }, 500)
         
-        
+        toast.promise(addToQueue, {
+            loading: 'Loading...',
+            className: myFont.className,
+            success: (data) => {
+                inProgressRef.current = false
+                return `Song added to queue`;
+            },
+            error: (error) => {
+                inProgressRef.current = false
+                return "Error adding song to queue. Ensure you have an active spotify listening session."
+            } 
+        });
     };
 
     async function addToQueue(): Promise<string> {
         try {
             const result = await mixMutation.mutateAsync({ uri: uri });
             return result.result;
-        } catch(error) {
-            throw new Error();
+        } catch {
+            throw new Error("Failed to add to queue");
         }
     }
 
