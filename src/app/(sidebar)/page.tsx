@@ -62,12 +62,12 @@ export default function ProfileChild() {
       </div>
       <motion.div initial={{opacity:0, marginTop:8}} animate={{opacity:1, marginTop:0}} className="flex flex-col flex-1">
         {
-          recent.data?.map((item, _index) => {
+          recent.data?.map((item, index) => {
             const timeObj = new Date(item.played_at);
             const readableTime = timeObj.toLocaleString('en-US', {year:'numeric', month:'long', day:'2-digit', hour:'numeric', minute:'numeric'});
             return (
-              <Tooltip key={item.track.id} closeDelay={0} className={`${myFont.className} p-2`} p-2 showArrow={true} placement="left" content={readableTime}>
-                  <Track name={item.track.name} ms={item.track.duration_ms} artists={item.track.artists} albumImages={item.track.album.images}/>
+              <Tooltip key={"tooltip" + index + item.track.id} closeDelay={0} className={`${myFont.className} p-2`} p-2 showArrow={true} placement="left" content={readableTime}>
+                  <Track key={"track" + index + item.track.id} uri={item.track.uri} name={item.track.name} ms={item.track.duration_ms} artists={item.track.artists} albumImages={item.track.album.images}/>
               </Tooltip>
             )
           })
