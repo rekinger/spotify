@@ -18,7 +18,7 @@ export default function ProfileChild() {
 
   if(me.isLoading || recent.isLoading) {
     return (
-      <div className="flex flex-1 w-11/12 sm:w-5/6 px-2 sm:px-4 justify-center items-center">
+      <div className="flex flex-1 h-full w-11/12 sm:w-5/6 px-2 sm:px-4 justify-center items-center">
         <ScaleLoader
           color={"rgb(29, 185, 84)"}
           loading={true}
@@ -39,15 +39,6 @@ export default function ProfileChild() {
             {
               me.data?.name
             }
-          </p>
-          <p className="opacity-70 text-center p-0 m-0">
-            {
-              me.data?.country
-            } | {
-              me.data?.email
-            } | {
-              me.data?.followers
-            } followers
           </p>
           <Button onClick={() => signOut()} color="success" className="w-36 sm:w-44 md:w-48 lg:w-52 h-10 rounded-lg">
               <p className="font-bold text-lg p-0 m-0">

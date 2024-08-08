@@ -4,9 +4,9 @@ import { Metadata } from "next";
 
 import { Providers } from "./providers";
 
+import { Hero } from "@/src/components/hero";
 import { Sidebar } from "@/src/components/sidebar";
 import { siteConfig } from "@/src/config/site";
-
 
 import localFont from 'next/font/local';
 
@@ -58,6 +58,7 @@ export default function RootLayout  ({
                   <div className="flex content items-center justify-center flex-1 flex-col">
                     <React.Fragment>
                       <Provider>
+                        <Hero />
                         {children}
                       </Provider>
                     </React.Fragment>
