@@ -17,6 +17,7 @@ declare module "next-auth" {
     accessToken: string;
     refreshToken: string;
     accessTokenExpires: number;
+    picture?: string | null | undefined,
   }
 }
 
@@ -32,6 +33,7 @@ interface SpotifyJWT extends DefaultJWT {
   accessToken: string;
   refreshToken: string;
   accessTokenExpires: number;
+  picture?: string | null | undefined,
 }
 
 interface SpotifyAccount extends Account {
@@ -82,6 +84,7 @@ export const authOptions: NextAuthOptions = {
           accessToken: (account as SpotifyAccount).access_token,
           refreshToken: (account as SpotifyAccount).refresh_token,
           accessTokenExpires: (account as SpotifyAccount).expires_at,
+          picture: token.picture
         };
       }
 
@@ -93,7 +96,6 @@ export const authOptions: NextAuthOptions = {
       
     
       if(Date.now() > (defaultSpotifyJWT.accessTokenExpires * 1000) - 10000) {
-        console.log("REFRESHING")
         const refreshed = await refreshAccessToken(defaultSpotifyJWT.refreshToken)
         defaultSpotifyJWT.accessToken = refreshed.access_token
         defaultSpotifyJWT.accessTokenExpires = (Date.now() / 1000) + refreshed.expires_in
@@ -106,6 +108,7 @@ export const authOptions: NextAuthOptions = {
       session.accessToken = (token as SpotifyJWT).accessToken;
       session.refreshToken = (token as SpotifyJWT).refreshToken;
       session.accessTokenExpires = (token as SpotifyJWT).accessTokenExpires;
+      session.picture = (token as SpotifyJWT).picture
       return session;
     },
   },

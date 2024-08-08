@@ -1,13 +1,13 @@
 "use client"
 import { Artist } from '@/src/components/artist';
 import { api } from '@/src/trpc/react';
+import { ScrollShadow } from '@nextui-org/scroll-shadow';
 import { Tab, Tabs } from "@nextui-org/tabs";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { ScaleLoader } from "react-spinners";
 
 export default function ArtistComponent() {
-    const [detailedView, setDetailedView] = useState(false);
     const [timeRange, setTimeRange] = useState("long_term");
 
     const topArtists = api.me.getTopArtists.useQuery({ time_range: timeRange }, {
@@ -16,13 +16,10 @@ export default function ArtistComponent() {
 
     return (
         <motion.div layout="size" className="flex flex-1 flex-col w-11/12 sm:w-5/6 sm:px-4 overflow-y-scroll overflow-x-hidden">
-            <div className="flex mt-4 mb-3 flex-col items-center justify-center md:flex-row  md:items-center md:justify-between ">
+            <div className="flex mb-3 flex-col items-center justify-center md:flex-row  md:items-center md:justify-between ">
                 <p className="text-2xl">
                     Top Artists
                 </p>
-                <button onClick={() => { setDetailedView(!detailedView) }}>
-                    Switch Layout
-                </button>
                 <Tabs variant={'underlined'} aria-label="Tabs" onSelectionChange={(key) => {
                     if (key === 'all-time') {
                         setTimeRange('long_term');
@@ -46,23 +43,25 @@ export default function ArtistComponent() {
                     />
                 </div>
             ) : (
-                <motion.div 
-                    initial={{ opacity: 0, marginTop: 8 }}
-                    animate={{ opacity: 1, marginTop: 0 }}
-                    transition={{duration:0.3}}
-                    className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full">
-                        {topArtists.data?.map((item, _index) => (
-                            <motion.div
-                                initial={{opacity:0}}
-                                animate={{opacity:1}}
-                                transition={{duration:0.4}}
-                                key={item.id}
-                                className={`min-h-52 w-full ${detailedView ? 'col-span-full' : ''}`}
-                            >
-                                <Artist name={item.name} images={item.images} id={item.id}/>
-                            </motion.div>
-                        ))}
-                </motion.div>
+                <ScrollShadow className="flex flex-1 flex-col w-full pb-5 overflow-y-scroll overflow-x-hidden">
+                    <motion.div 
+                        initial={{ opacity: 0, marginTop: 8 }}
+                        animate={{ opacity: 1, marginTop: 0 }}
+                        transition={{duration:0.3}}
+                        className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full">
+                            {topArtists.data?.map((item, _index) => (
+                                <motion.div
+                                    initial={{opacity:0}}
+                                    animate={{opacity:1}}
+                                    transition={{duration:0.4}}
+                                    key={item.id}
+                                    className={`min-h-52 w-full`}
+                                >
+                                    <Artist name={item.name} images={item.images} id={item.id}/>
+                                </motion.div>
+                            ))}
+                    </motion.div>
+                </ScrollShadow>
             )}
         </motion.div>
     );

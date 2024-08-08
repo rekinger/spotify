@@ -117,15 +117,6 @@ export default function Mixer() {
                     </ModalHeader>
                     <ModalBody>
                         <div className='flex flex-col h-[70dvh] justify-start items-center overflow-scroll overflow-x-hidden px-0 sm:px-3'>
-                            <div className="flex flex-col w-full justify-start items-center">
-                                <div onClick={uploadFile} className="flex flex-col justify-center items-center cursor-pointer">
-                                    <NextImage alt="uploaded image" height={100} width={100} src={uploadedImage ? uploadedImage: defaultImage}/>
-                                    <p className="opacity-65">
-                                        Customize Playlist Image
-                                    </p>
-                                </div>
-                                <input ref={hiddenFileInput} style={{display:'none'}} onChange={(e) => userImageUpload(e)} type="file" id="img" name="img" accept="image/*" />
-                            </div>
                             {
                                 mixMutation.isPending ? (
                                     <div className="flex w-full h-full items-center justify-center">
@@ -145,6 +136,19 @@ export default function Mixer() {
                                                 )
                                             })
                                         }
+                                        <div className="flex flex-col w-full justify-center items-center p-4">
+                                            <div onClick={uploadFile} className="flex flex-col justify-center items-center cursor-pointer">
+                                                <NextImage alt="uploaded image" height={100} width={100} src={uploadedImage ? uploadedImage: defaultImage}/>
+                                                <p className="opacity-65">
+                                                    Customize Playlist Image
+                                                </p>
+                                            </div>
+                                            <p className="self-start p-0">
+                                                Title
+                                            </p>
+                                            <Input classNames={{ inputWrapper: ["bg-[#1b1b1e] hover:!bg-[#1b1b1e] focus-within:!bg-[#1b1b1e] rounded-md"], input: "text-md"}} />
+                                            <input ref={hiddenFileInput} style={{display:'none'}} onChange={(e) => userImageUpload(e)} type="file" id="img" name="img" accept="image/*" />
+                                        </div>
                                     </motion.div>
                                 )
                             }
@@ -152,18 +156,18 @@ export default function Mixer() {
                     </ModalBody>
                 </ModalContent>
             </Modal>
-            <div className="relative flex flex-row pt-8">
+            <div className="relative flex flex-row">
                 <AnimatePresence>
                     {
                         popoverOpen ? (
-                                <motion.div initial={{ opacity: 0, top: 80 }} animate={{ opacity: 1, top: 75,}} exit={{opacity:0, top:80}} transition={{duration:0.15}} className="absolute flex flex-col items-center justify-start w-full h-auto max-h-[70dvh] overflow-x-hidden rounded-md top-20 left-0 px-4 z-20 pt-2 bg-[#191919]">
+                                <motion.div initial={{ opacity: 0, top: 55 }} animate={{ opacity: 1, top: 45,}} exit={{opacity:0, top:55}} transition={{duration:0.15}} className="absolute flex flex-col items-center justify-start w-full h-auto max-h-[70dvh] overflow-x-hidden rounded-md top-20 left-0 px-4 z-20 pt-2 bg-[#191919]">
                                     <Tabs variant={'underlined'} aria-label="Tabs">
                                         <Tab key="artists" title="Artists" className="flex flex-col w-full items-center justify-start overflow-scroll overflow-x-hidden">
                                             <ScrollShadow size={20} className="flex flex-col items-center justify-start w-full px-3">
                                                 {
                                                     !currData || !currData?.artists.length  ? (
                                                         <p className="opacity-65">
-                                                            No Artists Found - Ensure Search is 3+ Characters
+                                                            No Search Results
                                                         </p>
                                                     ):
                                                     currData.artists.map((item, _index) => {
@@ -179,7 +183,7 @@ export default function Mixer() {
                                                 {
                                                     !currData || !currData?.tracks.length  ? (
                                                         <p className="opacity-65">
-                                                            No Artists Found - Ensure Search is 3+ Characters
+                                                            No Search Results
                                                         </p>
                                                     ):
                                                     currData.tracks.map((item, _index) => {
@@ -202,7 +206,7 @@ export default function Mixer() {
                     }
                 </AnimatePresence>
                 <Input className="z-20" onFocus={() => {setPopoverOpen(true)}} onChange={(e) => debouncedSearch(e.target.value)} spellCheck={false} classNames={{
-                    inputWrapper: ["bg-[#191919] hover:!bg-[#202020] focus-within:!bg-[#191919] rounded-md"], input: "text-md"
+                    inputWrapper: ["bg-[#191919] hover:!bg-[#191919] focus-within:!bg-[#191919] rounded-md"], input: "text-md"
                     }} startContent={<FaSearch color={'rgb(29, 185, 84)'} size={15}/>} endContent={<div className="cursor-pointer active:opacity-65" onClick={() => {setPopoverOpen(!popoverOpen)}}><MdExpandMore color="white" size={27} style={{transform: popoverOpen ? "rotate(360deg)": "rotate(180deg)", transition:"transform 0.2s linear"}}/></div>} variant="flat" placeholder="Search Artists, Tracks, Genres" />
             </div>
             <div>
