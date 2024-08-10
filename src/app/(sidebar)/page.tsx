@@ -30,7 +30,7 @@ export default function ProfileChild() {
   }
  
   return (
-    <ScrollShadow className="flex flex-1 w-11/12 sm:w-5/6 px-2 sm:px-6 flex-col page-body overflow-y-scroll overflow-x-hidden py-8">
+    <ScrollShadow className="flex flex-1 w-11/12 sm:w-5/6 px-2 sm:px-6 flex-col page-body overflow-y-scroll overflow-x-hidden pt-8 pb-3">
       <motion.div initial={{opacity:0, marginTop:8}} animate={{opacity:1, marginTop:0}} className="flex flex-col justify-center items-center gap-y-1">
           <div className="relative w-28 h-28 sm:w-36 sm:h-36 md:h-44 md:w-44 lg:h-56 lg:w-56">
             <Image priority className="rounded-full" unoptimized layout="fill" objectFit="cover" alt="Profile Picture" src={me.data?.image || defaultImage} />
@@ -57,7 +57,7 @@ export default function ProfileChild() {
             //const timeObj = new Date(item.played_at);
             //const readableTime = timeObj.toLocaleString('en-US', {year:'numeric', month:'long', day:'2-digit', hour:'numeric', minute:'numeric'});
             return (
-                <Track key={"track" + index + item.track.id} uri={item.track.uri} name={item.track.name} ms={item.track.duration_ms} artists={item.track.artists} albumImages={item.track.album.images}/>
+                <Track href={item.track.external_urls.spotify} key={"track" + index + item.track.id} uri={item.track.uri} name={item.track.name} ms={item.track.duration_ms} artists={item.track.artists} albumImages={item.track.album.images}/>
             )
           })
         }

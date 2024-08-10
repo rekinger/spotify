@@ -7,7 +7,7 @@ import { motion } from 'framer-motion';
 import localFont from 'next/font/local';
 import NextImage from "next/image";
 import { Dispatch, SetStateAction, useState } from "react";
-import { MdRemove } from "react-icons/md";
+import { IoMdTrash } from "react-icons/io";
 import type { Ingredient as IngredientType } from "../types/types";
 
 const myFont = localFont({ src: '../public/CircularStd-Black.otf' })
@@ -40,7 +40,7 @@ export function Ingredient({ ingredient, setIngredients, index }: { ingredient: 
             </div>
             <Tooltip key={ingredient.id} closeDelay={0} className={`${myFont.className} p-2`} showArrow={true} placement="left" content={"Remove Ingredient"}>
                 <div onClick={removeIngredient} className="ml-auto cursor-pointer active:opacity-50">
-                    <MdRemove size={30} color="white" />
+                    <IoMdTrash size={30} color="white" />
                 </div>
             </Tooltip>
         </motion.div>
