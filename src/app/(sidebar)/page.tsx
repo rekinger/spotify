@@ -3,7 +3,7 @@ import { Track } from '@/src/components/track';
 import defaultImage from '@/src/public/default.png';
 import { api } from '@/src/trpc/react';
 import { Button } from '@nextui-org/button';
-import { Tooltip } from '@nextui-org/tooltip';
+import { ScrollShadow } from '@nextui-org/scroll-shadow';
 import { motion } from 'framer-motion';
 import { signOut } from 'next-auth/react';
 import localFont from 'next/font/local';
@@ -30,10 +30,10 @@ export default function ProfileChild() {
   }
  
   return (
-    <div className="flex flex-1 w-11/12 sm:w-5/6 px-2 sm:px-6 flex-col page-body overflow-y-scroll overflow-x-hidden py-8">
+    <ScrollShadow className="flex flex-1 w-11/12 sm:w-5/6 px-2 sm:px-6 flex-col page-body overflow-y-scroll overflow-x-hidden py-8">
       <motion.div initial={{opacity:0, marginTop:8}} animate={{opacity:1, marginTop:0}} className="flex flex-col justify-center items-center gap-y-1">
           <div className="relative w-28 h-28 sm:w-36 sm:h-36 md:h-44 md:w-44 lg:h-56 lg:w-56">
-            <Image className="rounded-full" unoptimized layout="fill" objectFit="cover" alt="Profile Picture" src={me.data?.image || defaultImage} />
+            <Image priority className="rounded-full" unoptimized layout="fill" objectFit="cover" alt="Profile Picture" src={me.data?.image || defaultImage} />
           </div>
           <p className="text-3xl p-0 m-0">
             {
@@ -54,16 +54,14 @@ export default function ProfileChild() {
       <motion.div initial={{opacity:0, marginTop:8}} animate={{opacity:1, marginTop:0}} className="flex flex-col flex-1">
         {
           recent.data?.map((item, index) => {
-            const timeObj = new Date(item.played_at);
-            const readableTime = timeObj.toLocaleString('en-US', {year:'numeric', month:'long', day:'2-digit', hour:'numeric', minute:'numeric'});
+            //const timeObj = new Date(item.played_at);
+            //const readableTime = timeObj.toLocaleString('en-US', {year:'numeric', month:'long', day:'2-digit', hour:'numeric', minute:'numeric'});
             return (
-              <Tooltip key={"tooltip" + index + item.track.id} closeDelay={0} className={`${myFont.className} p-2`} p-2 showArrow={true} placement="left" content={readableTime}>
-                  <Track key={"track" + index + item.track.id} uri={item.track.uri} name={item.track.name} ms={item.track.duration_ms} artists={item.track.artists} albumImages={item.track.album.images}/>
-              </Tooltip>
+                <Track key={"track" + index + item.track.id} uri={item.track.uri} name={item.track.name} ms={item.track.duration_ms} artists={item.track.artists} albumImages={item.track.album.images}/>
             )
           })
         }
       </motion.div>
-    </div>
+    </ScrollShadow>
   )
 }
