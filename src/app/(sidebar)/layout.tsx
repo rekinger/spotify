@@ -55,7 +55,7 @@ export default function RootLayout  ({
                     className: 'bg-[#191919] border-1 border-[#242424] text-white',
                 }} />
                   <Sidebar />
-                  <div className="flex content items-center justify-center flex-1 flex-col">
+                  <div className="flex h-full content items-center justify-between flex-1 flex-col">
                     <React.Fragment>
                       <Provider>
                         <Hero />
