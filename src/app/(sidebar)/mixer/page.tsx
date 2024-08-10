@@ -206,8 +206,25 @@ export default function Mixer() {
                     }
                 </AnimatePresence>
                 <Input className="z-20" onFocus={() => {setPopoverOpen(true)}} onChange={(e) => debouncedSearch(e.target.value)} spellCheck={false} classNames={{
-                    inputWrapper: [`bg-[#191919] hover:!bg-[#191919] focus-within:!bg-[#191919] rounded- rounded-md ${popoverOpen ? 'rounded-b-none': ''}`], input: "text-md"
-                    }} startContent={<FaSearch color={'rgb(29, 185, 84)'} size={15}/>} endContent={<div className="cursor-pointer active:opacity-65" onClick={() => {setPopoverOpen(!popoverOpen)}}><MdExpandMore color="white" size={27} style={{transform: popoverOpen ? "rotate(360deg)": "rotate(180deg)", transition:"transform 0.2s linear"}}/></div>} variant="flat" placeholder="Search Artists, Tracks, Genres" />
+                    inputWrapper: [`bg-[#191919] hover:!bg-[#191919] focus-within:!bg-[#191919] rounded- rounded-md ${popoverOpen ? 'rounded-b-none border-b border-[#252525]': ''}`], input: "text-md"
+                    }} startContent={<FaSearch color={'rgb(29, 185, 84)'} size={15}/>} 
+                    endContent={
+                        <div className="flex flex-row gap-x-3 items-center">
+                            <div className="max-w-[20vw] overflow-x-auto">
+                                <Tabs size="sm" aria-label="Search Tabs" radius='none' variant='light'>
+                                    <Tab key={"Artist2"} title={"Artists"}>
+                                    </Tab>
+                                    <Tab key={"Track2"} title={"Tracks"}>
+                                    </Tab>
+                                    <Tab key={"Genres2"} title={"Genres"}>
+                                    </Tab>
+                                </Tabs>
+                            </div>
+                            <div className="cursor-pointer active:opacity-65" onClick={() => {setPopoverOpen(!popoverOpen)}}>
+                                <MdExpandMore color="white" size={27} style={{transform: popoverOpen ? "rotate(360deg)": "rotate(180deg)", transition:"transform 0.2s linear"}}/>
+                            </div>
+                        </div>
+                    } variant="flat" placeholder="Search Artists, Tracks, Genres" />
             </div>
             <div>
                 <p className="p-0 m-0 text-xl">
