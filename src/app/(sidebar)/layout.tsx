@@ -50,7 +50,7 @@ export default function RootLayout  ({
         <TRPCReactProvider>
           <Providers>
             <Suspense>
-              <div className={"main " + myFont.className}>
+              <div id="main" className={"main " + myFont.className}>
               <Toaster toastOptions={{
                     className: 'bg-[#191919] border-1 border-[#242424] text-white',
                 }} />

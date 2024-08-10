@@ -17,8 +17,8 @@ import { AnimatePresence, motion } from 'framer-motion';
 import localFont from 'next/font/local';
 import NextImage from "next/image";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
+import ReactDOM from 'react-dom';
 import { FaSearch } from "react-icons/fa";
-import { MdExpandMore } from "react-icons/md";
 import { ScaleLoader } from 'react-spinners';
 import { toast } from 'sonner';
 import { useDebouncedCallback } from 'use-debounce';
@@ -34,10 +34,20 @@ export default function Mixer() {
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
     const [uploadedImage, setUploadedImage] = useState<string | null>(null)
     const hiddenFileInput = useRef<HTMLInputElement | null>(null);
+    const [searchTab, setSearchTab] = useState<string>("Artist")
 
     function uploadFile() {
         hiddenFileInput.current?.click(); 
     }
+
+    function Overlay() {
+        return ReactDOM.createPortal(
+            <div onClick={() => {setPopoverOpen(false)}} className="w-[100dvw] h-[100dvh] bg-black opacity-50 z-20 absolute top-0 left-0">
+            </div>,
+            document.getElementById("main") || document.body
+        );
+    }
+    
 
     function userImageUpload(event: ChangeEvent<HTMLInputElement>) {
         const reader = new FileReader();
@@ -110,6 +120,7 @@ export default function Mixer() {
 
     return (
         <div className="flex flex-1 relative w-11/12 sm:w-5/6 px-2 sm:px-6 flex-col page-body gap-y-4 overflow-hidden">
+            {popoverOpen && <Overlay />}
             <Modal scrollBehavior="inside" size="4xl"  className={'z-50 ' + myFont.className} isOpen={isOpen} onOpenChange={onOpenChange}>
                 <ModalContent>
                     <ModalHeader className="flex flex-col">
@@ -132,7 +143,7 @@ export default function Mixer() {
                                         {
                                             mixMutation.data?.tracks?.map((item, _index) => {
                                                 return (
-                                                    <Track uri={item.uri} name={item.name} ms={item.duration_ms} artists={item.artists} albumImages={item.album.images}/>
+                                                    <Track href={item.external_urls.spotify} uri={item.uri} name={item.name} ms={item.duration_ms} artists={item.artists} albumImages={item.album.images}/>
                                                 )
                                             })
                                         }
@@ -160,13 +171,13 @@ export default function Mixer() {
                 <AnimatePresence>
                     {
                         popoverOpen ? (
-                                <motion.div initial={{ opacity: 0, top: 48 }} animate={{ opacity: 1, top: 39,}} exit={{opacity:0, top:48}} transition={{duration:0.15}} className="absolute flex flex-col items-center justify-start w-full h-auto max-h-[70dvh] overflow-x-hidden rounded-md rounded-t-none left-0 px-4 z-20 pt-2 bg-[#191919]">
-                                    <Tabs variant={'underlined'} aria-label="Tabs">
-                                        <Tab key="artists" title="Artists" className="flex flex-col w-full items-center justify-start overflow-scroll overflow-x-hidden">
-                                            <ScrollShadow size={20} className="flex flex-col items-center justify-start w-full px-3">
+                                <motion.div initial={{ opacity: 0, top: 48 }} animate={{ opacity: 1, top: 39,}} exit={{opacity:0, top:48}} transition={{duration:0.15}} className="absolute flex flex-col items-center justify-start w-full h-auto max-h-[60dvh] overflow-x-hidden rounded-md rounded-t-none left-0 px-4 z-30 pt-2 bg-[#191919]">
+                                    {
+                                        searchTab === "Artists" ? (
+                                            <ScrollShadow size={30} className="flex flex-col items-center justify-start w-full px-3">
                                                 {
                                                     !currData || !currData?.artists.length  ? (
-                                                        <p className="opacity-65">
+                                                        <p className="opacity-65 py-4">
                                                             No Search Results
                                                         </p>
                                                     ):
@@ -177,12 +188,12 @@ export default function Mixer() {
                                                     })
                                                 }
                                             </ScrollShadow>
-                                        </Tab>
-                                        <Tab key="tracks" title="Tracks" className="flex flex-col w-full items-center justify-start overflow-scroll overflow-x-hidden">
-                                            <ScrollShadow size={20} className="flex flex-col items-center justify-start w-full px-0 sm:px-3">
+                                        ):
+                                        searchTab === "Tracks" ? (
+                                            <ScrollShadow size={30} className="flex flex-col items-center justify-start w-full px-0 sm:px-3">
                                                 {
                                                     !currData || !currData?.tracks.length  ? (
-                                                        <p className="opacity-65">
+                                                        <p className="opacity-65 py-4">
                                                             No Search Results
                                                         </p>
                                                     ):
@@ -193,45 +204,42 @@ export default function Mixer() {
                                                     })
                                                 }
                                             </ScrollShadow>
-                                        </Tab>
-                                        <Tab key="genres" title="Genres" className="w-full items-center text-center">
-                                            <p>
-                                                Some genres
-                                            </p>
-                                        </Tab>
-                                    </Tabs>
+                                        ):
+                                        null
+                                    }
                                 </motion.div>
                         ):
                         null
                     }
                 </AnimatePresence>
-                <Input className="z-20" onFocus={() => {setPopoverOpen(true)}} onChange={(e) => debouncedSearch(e.target.value)} spellCheck={false} classNames={{
+                <Input className="z-30" onFocus={() => {setPopoverOpen(true)}} onChange={(e) => debouncedSearch(e.target.value)} spellCheck={false} classNames={{
                     inputWrapper: [`bg-[#191919] hover:!bg-[#191919] focus-within:!bg-[#191919] rounded- rounded-md ${popoverOpen ? 'rounded-b-none border-b border-[#252525]': ''}`], input: "text-md"
-                    }} startContent={<FaSearch color={'rgb(29, 185, 84)'} size={15}/>} 
+                    }} startContent={<FaSearch color={'rgb(29, 185, 84)'} size={20}/>} 
                     endContent={
-                        <div className="flex flex-row gap-x-3 items-center">
-                            <div className="max-w-[20vw] overflow-x-auto">
-                                <Tabs size="sm" aria-label="Search Tabs" radius='none' variant='light'>
-                                    <Tab key={"Artist2"} title={"Artists"}>
+                        <div className="flex flex-row items-center">
+                            <ScrollShadow orientation='horizontal' className="max-w-[35vw] no-scroll overflow-x-auto border-l border-[#252525]">
+                                <Tabs classNames={{
+                                    tabContent: "group-data-[selected=true]:text-[#1DB954]"
+                                }} size="sm" aria-label="Search Tabs" radius='none' variant='light' onSelectionChange={(key) => {
+                                    setSearchTab(key.toString())
+                                }}>
+                                    <Tab key={"Artists"} title={"Artists"}>
                                     </Tab>
-                                    <Tab key={"Track2"} title={"Tracks"}>
+                                    <Tab key={"Tracks"} title={"Tracks"}>
                                     </Tab>
-                                    <Tab key={"Genres2"} title={"Genres"}>
+                                    <Tab key={"Genres"} title={"Genres"}>
                                     </Tab>
                                 </Tabs>
-                            </div>
-                            <div className="cursor-pointer active:opacity-65" onClick={() => {setPopoverOpen(!popoverOpen)}}>
-                                <MdExpandMore color="white" size={27} style={{transform: popoverOpen ? "rotate(360deg)": "rotate(180deg)", transition:"transform 0.2s linear"}}/>
-                            </div>
+                            </ScrollShadow>
                         </div>
-                    } variant="flat" placeholder="Search Artists, Tracks, Genres" />
+                    } variant="flat" placeholder="Search" />
             </div>
             <div>
-                <p className="p-0 m-0 text-xl">
+                <p className="p-0 mb-[-20px] text-xl">
                     Ingredients
                 </p>
             </div>
-            <motion.div layout="size" transition={{delay:0.3, duration:0.4}} className="flex flex-col items-center justify-start h-full w-full overflow-scroll overflow-x-hidden pb-8">
+            <motion.div layout="size" transition={{delay:0.3, duration:0.4}} className="flex flex-col items-center justify-start h-full w-full overflow-scroll overflow-x-hidden">
                 <AnimatePresence>
                     {
                         ingredients.length === 0 ? (
@@ -264,3 +272,36 @@ export default function Mixer() {
         </div>
     )
 }
+
+
+/*
+<ScrollShadow size={20} className="flex flex-col items-center justify-start w-full px-3">
+                                                {
+                                                    !currData || !currData?.artists.length  ? (
+                                                        <p className="opacity-65">
+                                                            No Search Results
+                                                        </p>
+                                                    ):
+                                                    currData.artists.map((item, _index) => {
+                                                        return (
+                                                            <SearchArtist key={item.id} id={item.id} name={item.name} images={item.images} genres={item.genres} setIngredients={setIngredients} added={ingredients.some(ingredient => ingredient.id === item.id)}/>
+                                                        )
+                                                    })
+                                                }
+                                            </ScrollShadow>
+
+                                            <ScrollShadow size={20} className="flex flex-col items-center justify-start w-full px-0 sm:px-3">
+                                                {
+                                                    !currData || !currData?.tracks.length  ? (
+                                                        <p className="opacity-65">
+                                                            No Search Results
+                                                        </p>
+                                                    ):
+                                                    currData.tracks.map((item, _index) => {
+                                                        return (
+                                                            <SearchTrack key={item.id} id={item.id} name={item.name} artists={item.artists} albumImages={item.album.images} setIngredients={setIngredients} added={ingredients.some(ingredient => ingredient.id === item.id)}/>
+                                                        )
+                                                    })
+                                                }
+                                            </ScrollShadow>
+*/

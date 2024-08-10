@@ -100,6 +100,33 @@ export const meRouter = createTRPCRouter({
           return []
         }
     }),
+    getTopTracks: publicProcedure
+    .input(z.object({ time_range: z.string() }))
+    .query(async ({input, ctx}) => {
+
+        const accessToken = ctx.session?.accessToken
+
+        const time_range = input.time_range
+
+        try {
+          const response = await fetch(`https://api.spotify.com/v1/me/top/tracks?time_range=${time_range}`, {
+              method:"GET",
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + accessToken
+              }
+            })
+          
+          const data = await response.json()
+          
+          return (data.items as Track[])
+        }
+        catch(error) {
+          console.log("ERROR", error)
+          return []
+        }
+    }),
     search: publicProcedure
     .input(z.object({ search: z.string() }))
     .mutation(async ({input, ctx}) => {

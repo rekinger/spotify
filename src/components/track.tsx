@@ -1,8 +1,10 @@
 import { api } from '@/src/trpc/react';
 import { Skeleton } from "@nextui-org/skeleton";
 import { Tooltip } from "@nextui-org/tooltip";
+import { motion } from 'framer-motion';
 import localFont from 'next/font/local';
 import NextImage from "next/image";
+import Link from 'next/link';
 import { useRef, useState } from "react";
 import { MdOutlineQueue } from "react-icons/md";
 import { toast } from 'sonner';
@@ -21,7 +23,7 @@ function getDuration(ms: number): string {
     return `${date.getMinutes()}:${seconds}`
 }
 
-export function Track({ name, ms, artists, albumImages, uri }: { name: string, ms: number, artists: Artist[], albumImages: Image[], uri: string}) {
+export function Track({ name, ms, artists, albumImages, uri, href }: { name: string, ms: number, artists: Artist[], albumImages: Image[], uri: string, href: string}) {
     const [imageLoaded, setImageLoaded] = useState(false)
     const mixMutation = api.me.addToQueue.useMutation()
     const inProgressRef = useRef(false) // Use a ref to keep track of the function call status
@@ -42,7 +44,7 @@ export function Track({ name, ms, artists, albumImages, uri }: { name: string, m
             },
             error: () => {
                 inProgressRef.current = false
-                return "Error adding song to queue. Ensure you have an active spotify listening session."
+                return "Error adding song to queue"
             } 
         });
     };
@@ -63,14 +65,36 @@ export function Track({ name, ms, artists, albumImages, uri }: { name: string, m
     }
 
     return (
-        <div className="flex track w-full rounded-md py-3 items-center">
+        <motion.div transition={{duration:0.5}} layout="position" className="flex track w-full rounded-md py-3 items-center">
             <div className="relative w-14 h-14">
                 <Skeleton className="h-14 w-14 absolute top-0 left-0" style={{ opacity: imageLoaded ? 0 : 1 }} />
                 <NextImage onLoad={() => setImageLoaded(true)} unoptimized alt="Album Image" src={albumImages.length > 0 ? albumImages[0].url : ""} height={56} width={56} />
             </div>
             <div className="flex flex-col ml-2 truncate max-w-[calc(100%-56px-32px-75px)]">
-                <p className="truncate">{name}</p>
-                <p className="opacity-75 truncate">{artists.map(artist => artist.name).join(", ")}</p>
+                <Link href={href} target="_blank" className="truncate hover:underline">{name}</Link>
+                <div className="flex flex-row items-start w-full overflow-x-auto no-scroll">
+                    {
+                        artists.map((item, index) => {
+                            if(index === artists.length - 1) {
+                                return (
+                                    <Link href={item.external_urls.spotify} className="opacity-65 hover:underline" target="_blank">
+                                        {
+                                            item.name
+                                        }
+                                    </Link>
+                                )
+                            }
+                            return (
+                                <Link href={item.external_urls.spotify} className="opacity-65 hover:underline" target="_blank">
+                                    {
+                                        item.name + ","
+                                    }
+                                    &nbsp;
+                                </Link>
+                            )
+                        })
+                    }
+                </div>
             </div>
             <div className="flex items-center gap-x-6 ml-auto pl-2">
                 <p className="opacity-75">{getDuration(ms)}</p>
@@ -80,6 +104,6 @@ export function Track({ name, ms, artists, albumImages, uri }: { name: string, m
                     </div>
                 </Tooltip>
             </div>
-        </div>
+        </motion.div>
     )
 }
