@@ -160,7 +160,7 @@ export default function Mixer() {
                 <AnimatePresence>
                     {
                         popoverOpen ? (
-                                <motion.div initial={{ opacity: 0, top: 55 }} animate={{ opacity: 1, top: 45,}} exit={{opacity:0, top:55}} transition={{duration:0.15}} className="absolute flex flex-col items-center justify-start w-full h-auto max-h-[70dvh] overflow-x-hidden rounded-md top-20 left-0 px-4 z-20 pt-2 bg-[#191919]">
+                                <motion.div initial={{ opacity: 0, top: 48 }} animate={{ opacity: 1, top: 39,}} exit={{opacity:0, top:48}} transition={{duration:0.15}} className="absolute flex flex-col items-center justify-start w-full h-auto max-h-[70dvh] overflow-x-hidden rounded-md rounded-t-none left-0 px-4 z-20 pt-2 bg-[#191919]">
                                     <Tabs variant={'underlined'} aria-label="Tabs">
                                         <Tab key="artists" title="Artists" className="flex flex-col w-full items-center justify-start overflow-scroll overflow-x-hidden">
                                             <ScrollShadow size={20} className="flex flex-col items-center justify-start w-full px-3">
@@ -206,7 +206,7 @@ export default function Mixer() {
                     }
                 </AnimatePresence>
                 <Input className="z-20" onFocus={() => {setPopoverOpen(true)}} onChange={(e) => debouncedSearch(e.target.value)} spellCheck={false} classNames={{
-                    inputWrapper: ["bg-[#191919] hover:!bg-[#191919] focus-within:!bg-[#191919] rounded-md"], input: "text-md"
+                    inputWrapper: [`bg-[#191919] hover:!bg-[#191919] focus-within:!bg-[#191919] rounded- rounded-md ${popoverOpen ? 'rounded-b-none': ''}`], input: "text-md"
                     }} startContent={<FaSearch color={'rgb(29, 185, 84)'} size={15}/>} endContent={<div className="cursor-pointer active:opacity-65" onClick={() => {setPopoverOpen(!popoverOpen)}}><MdExpandMore color="white" size={27} style={{transform: popoverOpen ? "rotate(360deg)": "rotate(180deg)", transition:"transform 0.2s linear"}}/></div>} variant="flat" placeholder="Search Artists, Tracks, Genres" />
             </div>
             <div>
