@@ -1,6 +1,7 @@
 "use client"
 import { Mix } from '@/src/components/mix';
 import { api } from '@/src/trpc/react';
+import { Pagination } from '@nextui-org/pagination';
 import { ScrollShadow } from '@nextui-org/scroll-shadow';
 import { Tab, Tabs } from "@nextui-org/tabs";
 import { motion } from "framer-motion";
@@ -8,9 +9,11 @@ import { useState } from "react";
 import { ScaleLoader } from "react-spinners";
 
 export default function ArtistComponent() {
-    const [type, setType] = useState("user");
+    const [type, setType] = useState<string>("user");
+    const [page, setPage] = useState<number>(1)
 
-    const mixes = api.me.getMixes.useQuery({ page: 0, type: type }, {
+    const pages = api.me.getMixesCount.useQuery({type: type})
+    const mixes = api.me.getMixes.useQuery({ page: page-1, type: type }, {
         staleTime: 5 * 60 * 1000,
     });
 
@@ -40,7 +43,7 @@ export default function ArtistComponent() {
                     />
                 </div>
             ) : (
-                <ScrollShadow className="flex flex-1 flex-col w-full pb-5 overflow-y-scroll overflow-x-hidden pr-2">
+                <ScrollShadow className="flex flex-1 flex-col w-full justify-start items-start overflow-y-scroll overflow-x-hidden pr-2 pb-4">
                     <motion.div 
                         initial={{ opacity: 0, marginTop: 8 }}
                         animate={{ opacity: 1, marginTop: 0 }}
@@ -58,6 +61,14 @@ export default function ArtistComponent() {
                                 </motion.div>
                             ))}
                     </motion.div>
+                    <div className="w-full flex items-center justify-center mt-auto">
+                        {
+                            !pages.isLoading && !mixes.isLoading ? (
+                                <Pagination page={page} onChange={setPage} total={pages.data ? pages.data: 0} color="success" variant="light" className='mb-[1px]'/>
+                            ):
+                            null
+                        }
+                    </div>
                 </ScrollShadow>
             )}
         </motion.div>

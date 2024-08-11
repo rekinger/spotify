@@ -1,6 +1,7 @@
 
 "use client";
 
+import defaultUserImage from '@/src/public/default.png';
 import { Skeleton } from "@nextui-org/skeleton";
 import { Tooltip } from "@nextui-org/tooltip";
 import { Mix as MixType } from "@prisma/client";
@@ -21,7 +22,7 @@ export function Mix({ mix }: { mix: MixType }) {
                 <Link className="w-full aspect-square" href={mix.url} target="_blank">
                     <div className="w-full h-full relative">
                         <Skeleton className=" h-full w-full absolute top-0 left-0" style={{opacity: imageLoaded? 0: 1}}/>
-                        <NextImage onLoad={() => {setImageLoaded(true)}} layout="fill" objectFit="cover" unoptimized alt="Album Image" src={mix.spotifyPlaylistImage} />
+                        <NextImage onLoad={() => {setImageLoaded(true)}} layout="fill" objectFit="cover" unoptimized alt="Album Image" src={mix.spotifyPlaylistImage != "" ? mix.spotifyPlaylistImage: defaultUserImage} />
                     </div>
                 </Link>
                 <div className="flex w-full justify-start items-start md:justify-between md:items-center flex-col md:flex-row py-1 px-1">
@@ -58,7 +59,7 @@ export function Mix({ mix }: { mix: MixType }) {
                     <Link href={mix.spotifyUserUrl} target="_blank" className="flex flex-col gap-x-1 items-start hover:underline flex-1 truncate max-w-full">
                         <div className="flex w-full justify-start md:justify-end">
                             <div className="flex relative h-9 w-9 rounded-full">
-                                <Image className="rounded-full" unoptimized layout='fill' objectFit="cover" alt="Profile Picture" src={mix.spotifyUserImage} />
+                                <Image className="rounded-full" unoptimized layout='fill' objectFit="cover" alt="Profile Picture" src={mix.spotifyUserImage != "" ? mix.spotifyUserImage: defaultUserImage} />
                             </div>
                         </div>
                         <p className="opacity-60 m-0 p-0 text-sm w-full truncate text-start md:text-end">

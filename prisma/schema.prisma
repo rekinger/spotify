@@ -30,7 +30,7 @@ model Mix {
     id                Int @id @default(autoincrement())
     spotifyPlaylistId String
     spotifyPlaylistImage String
-    spotifyUserImage  String
+    spotifyUserImage  String 
     spotifyUserUrl    String
     spotifyUserID     String
     title             String
