@@ -195,7 +195,7 @@ export default function Mixer() {
                                         </p>
                                     </Button> 
                                 </div>
-                                <div className="w-full flex justify-start mb-[-8px]">
+                                <div className="w-full text-lg flex justify-start mb-[-8px]">
                                     Tracks
                                 </div>
                                 <input ref={hiddenFileInput} style={{display:'none'}} onChange={(e) => userImageUpload(e)} type="file" id="img" name="img" accept="image/*" />

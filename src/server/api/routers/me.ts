@@ -342,7 +342,7 @@ export const meRouter = createTRPCRouter({
 
         console.log("FINAL DATA:", finalPlaylistData)
 
-        await ctx.db.mix.create({
+        const insertMix = await ctx.db.mix.create({
           data: {
             spotifyPlaylistId: (finalPlaylistData as Playlist).id,
             spotifyUserImage: ctx.session?.picture || "",
@@ -358,7 +358,7 @@ export const meRouter = createTRPCRouter({
         })
 
         return {
-          succeeded: true
+          succeeded: !!insertMix
         }
 
       }
@@ -382,8 +382,51 @@ export const meRouter = createTRPCRouter({
 
         if(type == "all") {
           const data = await ctx.db.mix.findMany({
-            take: 10,
-            skip: page * 10,
+            take: 12,
+            skip: page * 12,
+            where: {
+              OR: [
+                {
+                  spotifyUserID: ctx.session?.user.id
+                },
+                {
+                  public: true
+                }
+              ]
+            },
+            orderBy: {
+              createdAt:'desc'
+            }
+          })
+
+          return data
+        }
+        
+        const data = await ctx.db.mix.findMany({
+          take: 12,
+          skip: page * 12,
+          where: {
+            spotifyUserID: ctx.session?.user.id
+          },
+          orderBy: {
+            createdAt:'desc'
+          }
+        })
+
+        return data
+    }),
+    getMixesCount: publicProcedure
+    .input(z.object({type: z.string()}))
+    .query(async ({input, ctx}) => {
+
+        const type = input.type
+        const accessToken = ctx.session?.accessToken
+        if(!accessToken || !(type == "user" || type == "all")) {
+          throw new Error("Bad Query")
+        }
+
+        if(type == "all") {
+          const data = await ctx.db.mix.count({
             where: {
               OR: [
                 {
@@ -396,17 +439,15 @@ export const meRouter = createTRPCRouter({
             }
           })
 
-          return data
+          return Math.ceil(data / 12)
         }
         
-        const data = await ctx.db.mix.findMany({
-          take: 10,
-          skip: page * 10,
+        const data = await ctx.db.mix.count({
           where: {
             spotifyUserID: ctx.session?.user.id
           }
         })
 
-        return data
+        return Math.ceil(data / 12)
     }),
 });
