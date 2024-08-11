@@ -4,7 +4,7 @@ import {
   publicProcedure
 } from "../trpc";
 
-import type { Artist, meSpotify, RecentlyPlayed, Track } from "@/src/types/types";
+import type { Artist, meSpotify, Playlist, RecentlyPlayed, Track } from "@/src/types/types";
 
 const _genres: string[] =  ["acoustic", "afrobeat", "alt-rock", "alternative", "ambient", "anime", "black-metal", "bluegrass", "blues", "bossanova", "brazil", "breakbeat", "british", "cantopop", "chicago-house", "children", "chill", "classical", "club", "comedy", "country", "dance", "dancehall", "death-metal", "deep-house", "detroit-techno", "disco", "disney", "drum-and-bass", "dub", "dubstep", "edm", "electro", "electronic", "emo", "folk", "forro", "french", "funk", "garage", "german", "gospel", "goth", "grindcore", "groove", "grunge", "guitar", "happy", "hard-rock", "hardcore", "hardstyle", "heavy-metal", "hip-hop", "holidays", "honky-tonk", "house", "idm", "indian", "indie", "indie-pop", "industrial", "iranian", "j-dance", "j-idol", "j-pop", "j-rock", "jazz", "k-pop", "kids", "latin", "latino", "malay", "mandopop", "metal", "metal-misc", "metalcore", "minimal-techno", "movies", "mpb", "new-age", "new-release", "opera", "pagode", "party", "philippines-opm", "piano", "pop", "pop-film", "post-dubstep", "power-pop", "progressive-house", "psych-rock", "punk", "punk-rock", "r-n-b", "rainy-day", "reggae", "reggaeton", "road-trip", "rock", "rock-n-roll", "rockabilly", "romance", "sad", "salsa", "samba", "sertanejo", "show-tunes", "singer-songwriter", "ska", "sleep", "songwriter", "soul", "soundtracks", "spanish", "study", "summer", "swedish", "synth-pop", "tango", "techno", "trance", "trip-hop", "turkish", "work-out", "world-music"]
 
@@ -271,5 +271,142 @@ export const meRouter = createTRPCRouter({
         catch(error) {
           throw new Error("Spotify returned an error");
         }
+    }),
+    saveMix: publicProcedure
+    .input(z.object({ title: z.string(), description: z.string(), public: z.boolean(), tracks: z.array(z.string()) }))
+    .mutation(async ({input, ctx}) => {
+
+      if(!ctx.session) {
+        return {
+          succeeded: false
+        }
+      }
+
+      let title = input.title
+      title = title.replace(/^\s+/, '');
+
+      let description = input.description
+      description = description.replace(/^\s+/, '');
+
+      const accessToken = ctx.session?.accessToken
+
+      const query = encodeURI(`https://api.spotify.com/v1/users/${ctx.session?.user.id}/playlists`)
+
+      console.log("PUBLIC", input.public)
+      const requestData = {
+        name: title || "Playlist Created At makeamix.vercel.app",
+        public: input.public,
+        description: description
+    };
+
+      try {
+        const response = await fetch(query, {
+          method:"POST",
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + accessToken
+          },
+          body: JSON.stringify(requestData)
+        })
+
+        const data = await response.json()
+
+        //console.log("DATA", data)
+
+        const addSongsData = {
+          uris: input.tracks
+        }
+        const addSongsQuery = encodeURI(`https://api.spotify.com/v1/playlists/${(data as Playlist).id}/tracks`)
+        await fetch(addSongsQuery, {
+          method:"POST",
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + accessToken
+          },
+          body: JSON.stringify(addSongsData)
+        })
+
+        const finalPlaylistQuery = encodeURI(`https://api.spotify.com/v1/playlists/${(data as Playlist).id}`)
+        const finalPlaylistResponse = await fetch(finalPlaylistQuery, {
+          method:"GET",
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + accessToken
+          }
+        })
+
+        const finalPlaylistData = await finalPlaylistResponse.json()
+
+        console.log("FINAL DATA:", finalPlaylistData)
+
+        await ctx.db.mix.create({
+          data: {
+            spotifyPlaylistId: (finalPlaylistData as Playlist).id,
+            spotifyUserImage: ctx.session?.picture || "",
+            spotifyPlaylistImage: (finalPlaylistData as Playlist).images.length > 0 ? (finalPlaylistData as Playlist).images[0].url: "",
+            spotifyUserUrl: (finalPlaylistData as Playlist).owner.external_urls.spotify,
+            title: title,
+            spotifyUserID: ctx.session.user.id,
+            description: description,
+            public: input.public,
+            username: ctx.session?.user.name || "",
+            url: (finalPlaylistData as Playlist).external_urls.spotify
+          }
+        })
+
+        return {
+          succeeded: true
+        }
+
+      }
+      catch {
+        return {
+          succeeded: false
+        }
+      }
+    }),
+    getMixes: publicProcedure
+    .input(z.object({ type: z.string(), page: z.number() }))
+    .query(async ({input, ctx}) => {
+
+        const accessToken = ctx.session?.accessToken
+        const type = input.type
+        const page = input.page
+
+        if(!accessToken || !(type == "user" || type == "all")) {
+          throw new Error("Bad Query")
+        }
+
+        if(type == "all") {
+          const data = await ctx.db.mix.findMany({
+            take: 10,
+            skip: page * 10,
+            where: {
+              OR: [
+                {
+                  spotifyUserID: ctx.session?.user.id
+                },
+                {
+                  public: true
+                }
+              ]
+            }
+          })
+
+          return data
+        }
+        
+        const data = await ctx.db.mix.findMany({
+          take: 10,
+          skip: page * 10,
+          where: {
+            spotifyUserID: ctx.session?.user.id
+          }
+        })
+
+        return data
     }),
 });

@@ -7,7 +7,7 @@ import {
 import { DefaultJWT } from "next-auth/jwt";
 import SpotifyProvider from "next-auth/providers/spotify";
 
-const spotifyScopes = "playlist-read-private playlist-modify-private user-read-private user-read-email user-follow-read user-read-recently-played user-top-read user-modify-playback-state";
+const spotifyScopes = "playlist-read-private playlist-modify-private playlist-modify-public user-read-private user-read-email user-follow-read user-read-recently-played user-top-read user-modify-playback-state";
 
 declare module "next-auth" {
   interface Session extends DefaultSession {
@@ -110,6 +110,8 @@ export const authOptions: NextAuthOptions = {
       session.refreshToken = (token as SpotifyJWT).refreshToken;
       session.accessTokenExpires = (token as SpotifyJWT).accessTokenExpires;
       session.picture = (token as SpotifyJWT).picture
+      session.user.id = (token as SpotifyJWT).sub || ""
+
       return session;
     },
   },
