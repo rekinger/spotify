@@ -123,3 +123,43 @@ export interface SearchResult {
   tracks: Track[],
   genres: string[]
 }
+
+export interface Playlist {
+  collaborative: boolean;
+  description: string;
+  external_urls: {
+    spotify: string;
+  };
+  followers: {
+    href: string | null;
+    total: number;
+  };
+  href: string;
+  id: string;
+  images: Image[]; 
+  primary_color: string | null;
+  name: string;
+  type: string;
+  uri: string;
+  owner: {
+    href: string;
+    id: string;
+    type: string;
+    uri: string;
+    display_name: string | null;
+    external_urls: {
+      spotify: string;
+    };
+  };
+  public: boolean;
+  snapshot_id: string;
+  tracks: {
+    limit: number;
+    next: string | null;
+    offset: number;
+    previous: string | null;
+    href: string;
+    total: number;
+    items: Track[]; 
+  };
+}

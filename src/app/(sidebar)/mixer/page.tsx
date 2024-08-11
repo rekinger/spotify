@@ -5,17 +5,17 @@ import { Ingredient as IngredientComponent } from '@/src/components/ingredient';
 import { SearchArtist } from '@/src/components/searchartist';
 import { SearchTrack } from '@/src/components/searchtrack';
 import { Track } from '@/src/components/track';
-import defaultImage from '@/src/public/defaulttrack.png';
 import { api } from '@/src/trpc/react';
 import type { Artist, Ingredient, Track as TrackType } from "@/src/types/types";
 import { Button } from '@nextui-org/button';
-import { Input } from "@nextui-org/input";
+import { Input, Textarea } from "@nextui-org/input";
 import { Modal, ModalBody, ModalContent, ModalHeader, useDisclosure } from '@nextui-org/modal';
 import { ScrollShadow } from '@nextui-org/scroll-shadow';
+import { Switch } from '@nextui-org/switch';
 import { Tab, Tabs } from '@nextui-org/tabs';
 import { AnimatePresence, motion } from 'framer-motion';
 import localFont from 'next/font/local';
-import NextImage from "next/image";
+import { useRouter } from 'next/navigation';
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import ReactDOM from 'react-dom';
 import { FaSearch } from "react-icons/fa";
@@ -30,14 +30,33 @@ export default function Mixer() {
     const [popoverOpen, setPopoverOpen] = useState<boolean>(false)
     const searchMutation = api.me.search.useMutation()
     const mixMutation = api.me.createMix.useMutation()
+    const saveMutation = api.me.saveMix.useMutation()
     const [currData, setCurrData] = useState<{ artists: Artist[], tracks: TrackType[], genres:string[] } | null>(null);
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
     const [uploadedImage, setUploadedImage] = useState<string | null>(null)
     const hiddenFileInput = useRef<HTMLInputElement | null>(null);
     const [searchTab, setSearchTab] = useState<string>("Artist")
+    const [mixTitle, setMixTitle] = useState<string>("")
+    const [mixDescription, setMixDescription] = useState<string>("")
+    const [mixPublic, setMixPublic] = useState<boolean>(true)
+    const [creatingMix, setCreatingMix] = useState<boolean>(false)
+    const router = useRouter()
 
-    function uploadFile() {
-        hiddenFileInput.current?.click(); 
+
+    async function saveMix() {
+        setCreatingMix(true)
+        const success = await saveMutation.mutateAsync({
+            title: mixTitle,
+            description: mixDescription,
+            public: mixPublic,
+            tracks: mixMutation.data?.tracks?.map(track => track.uri) || []
+        })
+        if(success.succeeded) {
+            router.push("/mixer/mixes")
+        }
+        else {
+            setCreatingMix(false)
+        }
     }
 
     function Overlay() {
@@ -47,6 +66,24 @@ export default function Mixer() {
             document.getElementById("main") || document.body
         );
     }
+
+    function LoadingOverlay() {
+        return ReactDOM.createPortal(
+            <div className="w-[100dvw] h-[100dvh] z-50 absolute top-0 left-0 flex justify-center items-center">
+                <div className="w-full h-full absolute top-0 left-0 bg-black opacity-50">
+
+                </div>
+                <ScaleLoader
+                    color={"rgb(29, 185, 84)"}
+                    loading={true}
+                    className="!opacity-100"
+                    aria-label="Loading Spinner"
+                />
+            </div>,
+            document.getElementById("main") || document.body
+        );
+    }
+    
     
 
     function userImageUpload(event: ChangeEvent<HTMLInputElement>) {
@@ -121,13 +158,48 @@ export default function Mixer() {
     return (
         <div className="flex flex-1 relative w-11/12 sm:w-5/6 px-2 sm:px-6 flex-col page-body gap-y-4 overflow-hidden">
             {popoverOpen && <Overlay />}
-            <Modal scrollBehavior="inside" size="4xl"  className={'z-50 ' + myFont.className} isOpen={isOpen} onOpenChange={onOpenChange}>
+            {creatingMix && <LoadingOverlay />}
+            <Modal scrollBehavior="inside" size="4xl"  className={'z-40 ' + myFont.className} isOpen={isOpen && !creatingMix} onOpenChange={onOpenChange}>
                 <ModalContent>
                     <ModalHeader className="flex flex-col">
                         Your Mix
                     </ModalHeader>
                     <ModalBody>
                         <div className='flex flex-col h-[70dvh] justify-start items-center overflow-scroll overflow-x-hidden px-0 sm:px-3'>
+                            <div className="flex flex-col w-full justify-center items-center">
+                                {
+                                    /*
+                                    <div onClick={uploadFile} className="flex flex-col justify-center items-center cursor-pointer">
+                                        <NextImage alt="uploaded image" height={100} width={100} src={uploadedImage ? uploadedImage: defaultImage}/>
+                                        <p className="opacity-65">
+                                            Customize Playlist Image
+                                        </p>
+                                    </div>
+                                    */
+                                }
+                                <p className="self-start p-0 mb-[-2px]">
+                                    Title
+                                </p>
+                                <Input value={mixTitle} onChange={(e) => {setMixTitle(e.target.value)}} classNames={{ inputWrapper: ["bg-[#1b1b1e] hover:!bg-[#1b1b1e] focus-within:!bg-[#1b1b1e] rounded-md"], input: "text-md"}} />
+                                <p className="self-start p-0 mt-1 mb-[-2px]">
+                                    Description
+                                </p>
+                                <Textarea value={mixDescription} onChange={(e) => {setMixDescription(e.target.value)}} classNames={{ inputWrapper: ["bg-[#1b1b1e] hover:!bg-[#1b1b1e] focus-within:!bg-[#1b1b1e] rounded-md"], input: "text-md"}} />
+                                <div className="flex w-full justify-start mt-1">
+                                    <Switch isSelected={mixPublic} onValueChange={setMixPublic} defaultSelected color="success">{mixPublic ? "Public": "Private"}</Switch>
+                                </div>
+                                <div className="flex w-full items-center justify-end mt-1">
+                                    <Button onClick={saveMix} color="success" className="w-36 sm:w-44 h-10 rounded-lg">
+                                        <p className="font-bold text-lg p-0 m-0">
+                                            Save Mix
+                                        </p>
+                                    </Button> 
+                                </div>
+                                <div className="w-full flex justify-start mb-[-8px]">
+                                    Tracks
+                                </div>
+                                <input ref={hiddenFileInput} style={{display:'none'}} onChange={(e) => userImageUpload(e)} type="file" id="img" name="img" accept="image/*" />
+                            </div>
                             {
                                 mixMutation.isPending ? (
                                     <div className="flex w-full h-full items-center justify-center">
@@ -143,23 +215,10 @@ export default function Mixer() {
                                         {
                                             mixMutation.data?.tracks?.map((item, _index) => {
                                                 return (
-                                                    <Track href={item.external_urls.spotify} uri={item.uri} name={item.name} ms={item.duration_ms} artists={item.artists} albumImages={item.album.images}/>
+                                                    <Track key={"mix" + item.id} href={item.external_urls.spotify} uri={item.uri} name={item.name} ms={item.duration_ms} artists={item.artists} albumImages={item.album.images}/>
                                                 )
                                             })
                                         }
-                                        <div className="flex flex-col w-full justify-center items-center p-4">
-                                            <div onClick={uploadFile} className="flex flex-col justify-center items-center cursor-pointer">
-                                                <NextImage alt="uploaded image" height={100} width={100} src={uploadedImage ? uploadedImage: defaultImage}/>
-                                                <p className="opacity-65">
-                                                    Customize Playlist Image
-                                                </p>
-                                            </div>
-                                            <p className="self-start p-0">
-                                                Title
-                                            </p>
-                                            <Input classNames={{ inputWrapper: ["bg-[#1b1b1e] hover:!bg-[#1b1b1e] focus-within:!bg-[#1b1b1e] rounded-md"], input: "text-md"}} />
-                                            <input ref={hiddenFileInput} style={{display:'none'}} onChange={(e) => userImageUpload(e)} type="file" id="img" name="img" accept="image/*" />
-                                        </div>
                                     </motion.div>
                                 )
                             }
@@ -235,7 +294,7 @@ export default function Mixer() {
                     } variant="flat" placeholder="Search" />
             </div>
             <div>
-                <p className="p-0 mb-[-20px] text-xl">
+                <p className="p-0 mb-[-15px] text-xl">
                     Ingredients
                 </p>
             </div>
