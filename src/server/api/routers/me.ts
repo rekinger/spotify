@@ -292,9 +292,8 @@ export const meRouter = createTRPCRouter({
 
       const query = encodeURI(`https://api.spotify.com/v1/users/${ctx.session?.user.id}/playlists`)
 
-      console.log("PUBLIC", input.public)
       const requestData = {
-        name: title || "Playlist Created At makeamix.vercel.app",
+        name: title.length ? title: "Playlist Created At makeamix.vercel.app",
         public: input.public,
         description: description
     };
@@ -348,10 +347,10 @@ export const meRouter = createTRPCRouter({
             spotifyUserImage: ctx.session?.picture || "",
             spotifyPlaylistImage: (finalPlaylistData as Playlist).images.length > 0 ? (finalPlaylistData as Playlist).images[0].url: "",
             spotifyUserUrl: (finalPlaylistData as Playlist).owner.external_urls.spotify,
-            title: title,
+            title: (finalPlaylistData as Playlist).name,
             spotifyUserID: ctx.session.user.id,
             description: description,
-            public: input.public,
+            public: (finalPlaylistData as Playlist).public,
             username: ctx.session?.user.name || "",
             url: (finalPlaylistData as Playlist).external_urls.spotify
           }

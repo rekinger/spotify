@@ -1,4 +1,5 @@
 'use client'
+import { MixCompact } from '@/src/components/mixcompact';
 import { Track } from '@/src/components/track';
 import defaultImage from '@/src/public/default.png';
 import { api } from '@/src/trpc/react';
@@ -6,17 +7,34 @@ import { Button } from '@nextui-org/button';
 import { ScrollShadow } from '@nextui-org/scroll-shadow';
 import { motion } from 'framer-motion';
 import { signOut } from 'next-auth/react';
-import localFont from 'next/font/local';
 import Image from 'next/image';
+import Link from 'next/link';
+import { usePathname, useSearchParams } from 'next/navigation';
+import { FaArrowRight } from "react-icons/fa";
 import { ScaleLoader } from 'react-spinners';
-
-const myFont = localFont({ src: '../../public/CircularStd-Black.otf' })
 
 export default function ProfileChild() {
   const me = api.me.getMe.useQuery(undefined, {staleTime: 20 * 60 * 1000})
   const recent = api.me.getRecent.useQuery(undefined, {staleTime: 60 * 1000})
+  const mixes = api.me.getMixes.useQuery({ page: 0, type: "user" }, {
+    staleTime: 5 * 60 * 1000,
+  });
 
-  if(me.isLoading || recent.isLoading) {
+  const currentPath = usePathname();
+  const searchParams = useSearchParams();
+
+  let history = searchParams.get('history')
+  let nexthistory
+
+  if(!history) {
+      history = "" 
+      nexthistory = currentPath
+  }
+  else {
+      nexthistory = history + "," + currentPath
+  }
+
+  if(me.isLoading || recent.isLoading || mixes.isLoading) {
     return (
       <div className="flex flex-1 h-full w-11/12 sm:w-5/6 px-2 sm:px-4 justify-center items-center">
         <ScaleLoader
@@ -46,6 +64,36 @@ export default function ProfileChild() {
               </p>
           </Button> 
       </motion.div>
+      {
+        mixes.data?.length ? (
+          <div className="mt-5 flex w-full justify-between">
+            <p className="text-2xl">
+              Your Mixes
+            </p>
+            <Link href={"/mixer/mixes?history=" + nexthistory} className="flex flex-row  items-center justify-center gap-x-1 text-[#1DB954] text-2xl hover:underline">
+              <p>
+                All Mixes
+              </p>
+              <FaArrowRight color={"#1DB954]"} size={20}/>
+            </Link>
+          </div>
+        ):
+        null
+      }
+      {
+        mixes.data?.length ? (
+          <motion.div initial={{opacity:0, marginTop:8}} animate={{opacity:1, marginTop:0}} className="flex flex-col flex-1">
+          {
+            mixes.data?.map((item, _index) => {
+              return (
+                  <MixCompact key={item.id} mix={item} />
+              )
+            })
+          }
+        </motion.div>
+        ):
+        null
+      }
       <div className="mt-5">
         <p className="text-2xl">
           Recently Played

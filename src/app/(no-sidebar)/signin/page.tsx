@@ -9,8 +9,6 @@ const params: { [key: string]: string } = {};
 export default function SignInPage() {
   const searchParams = useSearchParams();
 
-  console.log(searchParams?.toString())
-
   searchParams?.forEach((value: string, key: string) => {
     params[key] = value
   })

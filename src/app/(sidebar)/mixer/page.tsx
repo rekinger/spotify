@@ -15,10 +15,10 @@ import { Switch } from '@nextui-org/switch';
 import { Tab, Tabs } from '@nextui-org/tabs';
 import { AnimatePresence, motion } from 'framer-motion';
 import localFont from 'next/font/local';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import ReactDOM from 'react-dom';
-import { FaSearch } from "react-icons/fa";
+import { FaLightbulb, FaSearch } from "react-icons/fa";
 import { ScaleLoader } from 'react-spinners';
 import { toast } from 'sonner';
 import { useDebouncedCallback } from 'use-debounce';
@@ -42,6 +42,20 @@ export default function Mixer() {
     const [creatingMix, setCreatingMix] = useState<boolean>(false)
     const router = useRouter()
 
+    const currentPath = usePathname();
+    const searchParams = useSearchParams();
+
+    let history = searchParams.get('history')
+    let nexthistory: string
+
+    if(!history) {
+        history = "" 
+        nexthistory = currentPath
+    }
+    else {
+        nexthistory = history + "," + currentPath
+    }
+
 
     async function saveMix() {
         setCreatingMix(true)
@@ -52,9 +66,10 @@ export default function Mixer() {
             tracks: mixMutation.data?.tracks?.map(track => track.uri) || []
         })
         if(success.succeeded) {
-            router.push("/mixer/mixes")
+            router.push("/mixer/mixes?history=" + nexthistory)
         }
         else {
+            toast.error("Error Creating Mix!")
             setCreatingMix(false)
         }
     }
@@ -166,40 +181,6 @@ export default function Mixer() {
                     </ModalHeader>
                     <ModalBody>
                         <div className='flex flex-col h-[70dvh] justify-start items-center overflow-scroll overflow-x-hidden px-0 sm:px-3'>
-                            <div className="flex flex-col w-full justify-center items-center">
-                                {
-                                    /*
-                                    <div onClick={uploadFile} className="flex flex-col justify-center items-center cursor-pointer">
-                                        <NextImage alt="uploaded image" height={100} width={100} src={uploadedImage ? uploadedImage: defaultImage}/>
-                                        <p className="opacity-65">
-                                            Customize Playlist Image
-                                        </p>
-                                    </div>
-                                    */
-                                }
-                                <p className="self-start p-0 mb-[-2px]">
-                                    Title
-                                </p>
-                                <Input value={mixTitle} onChange={(e) => {setMixTitle(e.target.value)}} classNames={{ inputWrapper: ["bg-[#1b1b1e] hover:!bg-[#1b1b1e] focus-within:!bg-[#1b1b1e] rounded-md"], input: "text-md"}} />
-                                <p className="self-start p-0 mt-1 mb-[-2px]">
-                                    Description
-                                </p>
-                                <Textarea value={mixDescription} onChange={(e) => {setMixDescription(e.target.value)}} classNames={{ inputWrapper: ["bg-[#1b1b1e] hover:!bg-[#1b1b1e] focus-within:!bg-[#1b1b1e] rounded-md"], input: "text-md"}} />
-                                <div className="flex w-full justify-start mt-1">
-                                    <Switch isSelected={mixPublic} onValueChange={setMixPublic} defaultSelected color="success">{mixPublic ? "Public": "Private"}</Switch>
-                                </div>
-                                <div className="flex w-full items-center justify-end mt-1">
-                                    <Button onClick={saveMix} color="success" className="w-36 sm:w-44 h-10 rounded-lg">
-                                        <p className="font-bold text-lg p-0 m-0">
-                                            Save Mix
-                                        </p>
-                                    </Button> 
-                                </div>
-                                <div className="w-full text-lg flex justify-start mb-[-8px]">
-                                    Tracks
-                                </div>
-                                <input ref={hiddenFileInput} style={{display:'none'}} onChange={(e) => userImageUpload(e)} type="file" id="img" name="img" accept="image/*" />
-                            </div>
                             {
                                 mixMutation.isPending ? (
                                     <div className="flex w-full h-full items-center justify-center">
@@ -209,17 +190,58 @@ export default function Mixer() {
                                             aria-label="Loading Spinner"
                                         />
                                     </div>
-                                ):
+                                ): 
                                 (
-                                    <motion.div initial={{marginTop:10, opacity:0}} animate={{marginTop:0, opacity:1}} className="flex flex-col w-full h-full justify-start items-center">
-                                        {
-                                            mixMutation.data?.tracks?.map((item, _index) => {
-                                                return (
-                                                    <Track key={"mix" + item.id} href={item.external_urls.spotify} uri={item.uri} name={item.name} ms={item.duration_ms} artists={item.artists} albumImages={item.album.images}/>
-                                                )
-                                            })
-                                        }
-                                    </motion.div>
+                                    mixMutation.data?.tracks?.length ? (
+                                        <div className="flex flex-col w-full">
+                                            <div className="flex flex-col w-full justify-center items-center">
+                                                <p className="self-start p-0 mb-[-2px]">
+                                                    Title
+                                                </p>
+                                                <Input value={mixTitle} onChange={(e) => {setMixTitle(e.target.value)}} classNames={{ inputWrapper: ["bg-[#1b1b1e] hover:!bg-[#1b1b1e] focus-within:!bg-[#1b1b1e] rounded-md"], input: "text-md"}} />
+                                                <p className="self-start p-0 mt-1 mb-[-2px]">
+                                                    Description
+                                                </p>
+                                                <Textarea value={mixDescription} onChange={(e) => {setMixDescription(e.target.value)}} classNames={{ inputWrapper: ["bg-[#1b1b1e] hover:!bg-[#1b1b1e] focus-within:!bg-[#1b1b1e] rounded-md"], input: "text-md"}} />
+                                                <div className="flex w-full justify-start mt-1">
+                                                    <Switch isSelected={mixPublic} onValueChange={setMixPublic} defaultSelected color="success">{mixPublic ? "Public": "Private"}</Switch>
+                                                </div>
+                                                <div className="flex w-full items-center justify-end mt-1">
+                                                    <Button onClick={saveMix} color="success" className="w-36 sm:w-44 h-10 rounded-lg">
+                                                        <p className="font-bold text-lg p-0 m-0">
+                                                            Save Mix
+                                                        </p>
+                                                    </Button> 
+                                                </div>
+                                                <div className="w-full text-lg flex justify-start mb-[-8px]">
+                                                    Tracks
+                                                </div>
+                                                <input ref={hiddenFileInput} style={{display:'none'}} onChange={(e) => userImageUpload(e)} type="file" id="img" name="img" accept="image/*" />
+                                            </div>
+                                            <motion.div initial={{marginTop:10, opacity:0}} animate={{marginTop:0, opacity:1}} className="flex flex-col w-full h-full justify-start items-center">
+                                                {
+                                                    mixMutation.data?.tracks?.map((item, _index) => {
+                                                        return (
+                                                            <Track key={"mix" + item.id} href={item.external_urls.spotify} uri={item.uri} name={item.name} ms={item.duration_ms} artists={item.artists} albumImages={item.album.images}/>
+                                                        )
+                                                    })
+                                                }
+                                            </motion.div>
+                                        </div>
+                                    ):
+                                    (
+                                        <div className="flex justify-center items-center w-full h-full flex-col text-center">
+                                            <p className="text-3xl">
+                                                Unable to Create Mix With Chosen Ingredients
+                                            </p>
+                                            <div className='flex flex-row gap-x-1 items-center justify-center opacity-65'>
+                                                <FaLightbulb color="white" size={14}/>
+                                                <p className="text-sm">
+                                                    Try Adding At Least One Artist to Your Mix
+                                                </p>
+                                            </div>
+                                        </div>
+                                    )
                                 )
                             }
                         </div>
