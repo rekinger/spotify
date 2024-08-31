@@ -292,6 +292,7 @@ export const meRouter = createTRPCRouter({
 
       const query = encodeURI(`https://api.spotify.com/v1/users/${ctx.session?.user.id}/playlists`)
 
+      console.log(input.public)
       const requestData = {
         name: title.length ? title: "Playlist Created At makeamix.vercel.app",
         public: input.public,
@@ -339,8 +340,6 @@ export const meRouter = createTRPCRouter({
 
         const finalPlaylistData = await finalPlaylistResponse.json()
 
-        console.log("FINAL DATA:", finalPlaylistData)
-
         const insertMix = await ctx.db.mix.create({
           data: {
             spotifyPlaylistId: (finalPlaylistData as Playlist).id,
@@ -350,7 +349,7 @@ export const meRouter = createTRPCRouter({
             title: (finalPlaylistData as Playlist).name,
             spotifyUserID: ctx.session.user.id,
             description: description,
-            public: (finalPlaylistData as Playlist).public,
+            public: input.public,
             username: ctx.session?.user.name || "",
             url: (finalPlaylistData as Playlist).external_urls.spotify
           }
