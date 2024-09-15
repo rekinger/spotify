@@ -43,12 +43,12 @@ export default function ArtistComponent() {
                     />
                 </div>
             ) : (
-                <ScrollShadow className="flex flex-1 flex-col w-full pb-5 overflow-y-scroll overflow-x-hidden">
+                <ScrollShadow className="flex flex-1 flex-col w-full pb-5 overflow-y-scroll overflow-x-hidden pr-2">
                     <motion.div 
                         initial={{ opacity: 0, marginTop: 8 }}
                         animate={{ opacity: 1, marginTop: 0 }}
                         transition={{duration:0.3}}
-                        className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full">
+                        className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full">
                             {topArtists.data?.map((item, _index) => (
                                 <motion.div
                                     initial={{opacity:0}}

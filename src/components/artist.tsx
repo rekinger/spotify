@@ -14,7 +14,7 @@ export function Artist({ name, images, href }: { name: string, images: Image[], 
     return (
             <motion.div layout="position" transition={{duration:0.5}} className="w-full h-full flex flex-col justify-center items-center">
                 <Link className="h-full w-full flex items-center justify-center flex-col" href={href} target="_blank">
-                    <div className="relative w-full aspect-square md:w-32 md:h-32 lg:w-44 lg:h-44">
+                    <div className="relative w-full aspect-square">
                         <Skeleton className=" h-full w-full absolute top-0 left-0" style={{opacity: imageLoaded? 0: 1}}/>
                         <NextImage onLoad={() => {setImageLoaded(true)}} layout="fill" objectFit="cover" unoptimized alt="Album Image" src={images.length > 0 ? images[0].url:""} />
                     </div>
